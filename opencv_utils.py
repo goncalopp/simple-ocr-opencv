@@ -6,8 +6,7 @@ def ask_for_key():
     return cv2.waitKey(0)
 
 def background_color( image ):
-    assert image.shape[2]==3
-    return tuple(map(int,numpy.median(numpy.median(image, 0),0)))
+    return numpy.median(numpy.median(image, 0),0).astype( numpy.int )
     
 def show_image_and_wait_for_key( image, name="Image" ):
     '''Shows an image, outputting name. keygroups is a dictionary of keycodes to functions; they are executed when the corresponding keycode is pressed'''

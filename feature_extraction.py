@@ -1,6 +1,7 @@
 import numpy
 import cv2
 from segmentation import region_from_segment
+from opencv_utils import background_color
 
 FEATURE_DATATYPE=   numpy.float32
 #FEATURE_SIZE is defined on the specific feature extractor instance
@@ -20,6 +21,7 @@ class SimpleFeatureExtractor( FeatureExtractor ):
     def extract(self, image, segments):
         image= cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
         fs= self.feature_size
+        bg= background_color( image )
  
         regions=numpy.ndarray( shape=(0,fs), dtype=FEATURE_DATATYPE )
         for segment in segments:
@@ -33,7 +35,7 @@ class SimpleFeatureExtractor( FeatureExtractor ):
                 region = cv2.resize(region, new_size)
                 s= region.shape
                 newregion= numpy.ndarray( (fs,fs), dtype= region.dtype )
-                newregion[:,:]= 255
+                newregion[:,:]= bg
                 newregion[:s[0],:s[1]]= region
                 region=newregion
             regions= numpy.append( regions, region, axis=0 )

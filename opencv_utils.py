@@ -5,8 +5,14 @@ import cv2
 def ask_for_key():
     return cv2.waitKey(0)
 
-def background_color( image ):
-    return numpy.median(numpy.median(image, 0),0).astype( numpy.int )
+def background_color( image, numpy_result=True ):
+    result= numpy.median(numpy.median(image, 0),0).astype( numpy.int )
+    if not numpy_result:
+        try:
+            result= tuple(map(int, result))
+        except TypeError:
+            result= (int(result),)
+    return result
     
 def show_image_and_wait_for_key( image, name="Image" ):
     '''Shows an image, outputting name. keygroups is a dictionary of keycodes to functions; they are executed when the corresponding keycode is pressed'''

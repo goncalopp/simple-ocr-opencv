@@ -36,17 +36,13 @@ class UserGrounder( Grounder ):
     def ground( self, imagefile, _=None ):
         '''asks the user to label each segment as either a character or "<" for unknown'''
         print '''For each shown segment, please write the character that it represents, or spacebar if it's not a character. Press ESC when completed, arrow keys to move'''
-        image= imagefile.image.copy()
         segments= Grounder._createSegments( imagefile )
-        bg= background_color(image)
         i=0
         classes= [chr(10)]*len(segments) #char(10) is newline. it represents a non-assigned label, and will b filtered
         done= False
         allowed_chars= map( ord, string.ascii_letters+string.digits )
-        last = 0
         while not done:
-            draw_segments( image, [segments[ last ]], bg)
-            last= i
+            image= imagefile.image.copy()
             draw_segments( image, [segments[ i ]])
             key= show_image_and_wait_for_key( image, "segment "+str(i))
             if key==27: #ESC

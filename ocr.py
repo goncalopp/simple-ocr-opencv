@@ -1,5 +1,4 @@
-from segmentation import draw_segments
-from opencv_utils import show_image_and_wait_for_key
+from opencv_utils import show_image_and_wait_for_key, draw_segments
 import numpy
 import cv2
 

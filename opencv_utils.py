@@ -35,3 +35,10 @@ def contrast( image, scale=1, center=128 ):
         else:
             img-=center*(1 - 1/scale)
             img*=scale
+
+def draw_segments( image , segments, color=(255,0,0), line_width=1):
+        '''draws segments on image'''
+        for segment in segments:
+            x,y,w,h= segment
+            cv2.rectangle(image,(x,y),(x+w,y+h),color,line_width)
+

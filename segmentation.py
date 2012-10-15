@@ -1,4 +1,4 @@
-from opencv_utils import show_image_and_wait_for_key, brightness
+from opencv_utils import show_image_and_wait_for_key, brightness, draw_segments
 import numpy
 import cv2
 
@@ -26,18 +26,6 @@ def region_from_segment( image, segment ):
     '''given a segment (rectangle) and an image, returns it's corresponding subimage'''
     x,y,w,h= segment
     return image[y:y+h,x:x+w]
-
-def draw_segments( image , rectangles, color=(255,0,0), line_width=1):
-        '''draws segments on image'''
-        for rectangle in rectangles:
-            x,y,w,h= rectangle
-            cv2.rectangle(image,(x,y),(x+w,y+h),color,line_width)
-
-def show_segments( image, rectangles,  color=(255,0,0), line_width=1):
-    '''draws and shows the segments on a copy of the image'''
-    copy= image.copy()
-    draw_segments( copy, rectangles, color, line_width)
-    show_image_and_wait_for_key( copy, "segments")
 
 def order_segments( segments, max_line_height=20, max_line_width=10000 ):
     '''sort segments in read order - left to right, up to down'''

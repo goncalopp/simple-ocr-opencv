@@ -42,3 +42,9 @@ def draw_segments( image , segments, color=(255,0,0), line_width=1):
             x,y,w,h= segment
             cv2.rectangle(image,(x,y),(x+w,y+h),color,line_width)
 
+def draw_classes( image, segments, classes ):
+    assert len(segments)==len(classes)
+    for s,c in zip(segments, classes):
+        x,y,w,h=s
+        cv2.putText(image,c,(x,y),0,0.5,(128,128,128))
+

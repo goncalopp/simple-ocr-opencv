@@ -3,7 +3,7 @@
 from files import ImageFile
 from classification import classes_to_numpy
 from segmentation import best_segmenter
-from opencv_utils import background_color, show_image_and_wait_for_key, draw_segments
+from opencv_utils import background_color, show_image_and_wait_for_key, draw_segments, draw_classes
 import numpy
 import string
 
@@ -44,6 +44,7 @@ class UserGrounder( Grounder ):
         while not done:
             image= imagefile.image.copy()
             draw_segments( image, [segments[ i ]])
+            draw_classes( image, segments, classes )
             key= show_image_and_wait_for_key( image, "segment "+str(i))
             if key==27: #ESC
                 break

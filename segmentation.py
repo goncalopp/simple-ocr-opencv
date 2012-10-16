@@ -37,6 +37,38 @@ def order_segments( segments, max_line_height=20, max_line_width=10000 ):
     order= max_line_width*(s[:,1]/max_line_height)+s[:,0]
     sort_order= numpy.argsort( order )
     return segments[ sort_order ]
+
+def _guess_interline_size( segments, max_lines=50, confidence1_minimum=1.5, confidence2_minimum=3 ):
+    '''guesses and returns text inter-line distance, number of lines, y_position of first line'''
+    ys= segments[:,1].astype(numpy.float32)
+    
+    means_list, diffs, deviations=[], [], []
+    start_n= 3
+    for k in range(start_n,max_lines):
+        temp, classified_points, means = cv2.kmeans( data=ys, K=k, bestLabels=None, criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_MAX_ITER, 1, 10), attempts=1, flags=cv2.KMEANS_PP_CENTERS)
+        means=numpy.sort(means, axis=0)
+        #calculate the center of each cluster. Assuming lines are equally spaced...
+        tmp1=numpy.diff(means, axis=0) #diff will be equal or very similar
+        tmp2= numpy.std(tmp1)/numpy.mean(means) #so variance is minimal
+        tmp3= numpy.sum( (tmp1-numpy.mean(tmp1))**2) #root mean square deviation, more sensitive than std
+        means_list.append( means )
+        diffs.append(tmp1)
+        deviations.append(tmp3)
+    
+    i= deviations.index(min(deviations))
+    number_of_lines=  i+start_n
+    inter_line_distance= numpy.mean(diffs[i])
+    first_line= means_list[i][0][0]
+    
+    #calculate confidence
+    betterness= numpy.sort(deviations, axis=0)
+    betterness= 1/(betterness[:-1]/betterness[1:]) #how much better is each solution compared to the next best?
+    confidence= ( betterness[0] - numpy.mean(betterness) ) / numpy.std(betterness) #number of stddevs
+    if confidence<3:
+        raise Exception("low confidence")
+    print inter_line_distance, number_of_lines, first_line
+    exit()
+    return inter_line_distance, number_of_lines, first_line
     
 class Segmenter( object ):
     '''A image segmenter. Finds rectangular sections in an image'''    

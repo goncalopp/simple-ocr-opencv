@@ -27,7 +27,7 @@ def region_from_segment( image, segment ):
     x,y,w,h= segment
     return image[y:y+h,x:x+w]
 
-def order_segments( segments, max_line_height=20, max_line_width=10000 ):
+def _order_segments( segments, max_line_height=20, max_line_width=10000 ):
     '''sort segments in read order - left to right, up to down'''
     #sort_f= lambda r: max_line_width*(r[1]/max_line_height)+r[0]
     #segments= sorted(segments, key=sort_f)
@@ -124,6 +124,7 @@ class ContourSegmenter( Segmenter ):
     def segment( self, image ):
         segments, contours, hierarchy= self._contour_segment( image )
         segments= order_segments( segments )
+        segments= _order_segments( segments )
         good_segments, bad_segments= ContourSegmenter._filter_segments( segments, self.tolerance)
         if self.show_steps:
             ContourSegmenter._show_steps( image, contours, good_segments, bad_segments )

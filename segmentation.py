@@ -38,6 +38,18 @@ def _order_segments( segments, max_line_height=20, max_line_width=10000 ):
     sort_order= numpy.argsort( order )
     return segments[ sort_order ]
 
+def _filter_small_segments( segments, min_width=8, min_height=10 ):
+    '''returns boolean array marking segments too small to be correct'''
+    small_width= segments[:,2]<min_width
+    small_height= segments[:,3]<min_height
+    return small_width + small_height
+
+def _filter_large_segments( segments, max_width=30, max_height=50 ):
+    '''returns boolean array marking segments too large to be correct'''
+    large_width= segments[:,2]>max_width
+    large_height= segments[:,3]>max_height
+    return large_width + large_height #bool array
+
 def _guess_interline_size( segments, max_lines=50, confidence1_minimum=1.5, confidence2_minimum=3 ):
     '''guesses and returns text inter-line distance, number of lines, y_position of first line'''
     ys= segments[:,1].astype(numpy.float32)

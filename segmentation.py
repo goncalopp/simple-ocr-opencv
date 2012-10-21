@@ -50,6 +50,9 @@ def _filter_large_segments( segments, max_width=30, max_height=50 ):
     large_height= segments[:,3]>max_height
     return large_width + large_height #bool array
 
+def bool_indexing_to_indexes( bool_array ):
+    return [i for i,x in enumerate(bool_array) if x]
+
 def _filter_contained_segments( segments ):
     '''returns boolean array marking segments that are contained by some other'''
     segments= segments.astype( numpy.float)
@@ -97,8 +100,6 @@ def _guess_interline_size( segments, max_lines=50, confidence1_minimum=1.5, conf
     confidence= ( betterness[0] - numpy.mean(betterness) ) / numpy.std(betterness) #number of stddevs
     if confidence<3:
         raise Exception("low confidence")
-    print inter_line_distance, number_of_lines, first_line
-    exit()
     return inter_line_distance, number_of_lines, first_line
     
 class Segmenter( object ):
@@ -109,6 +110,7 @@ class Segmenter( object ):
         raise NotImplementedError()
 
 class ContourSegmenter( Segmenter ):
+    FILTERS= [_filter_large_segments, _filter_small_segments, _filter_contained_segments]
     def __init__(self, blur_radius=5, blocksize=11, c=10, min_area=0, tolerance=0.1, show_steps=False):
         '''blur_radius is for gaussian blur preprocessing.
         blocksize is for adaptiveThresold. 
@@ -132,31 +134,33 @@ class ContourSegmenter( Segmenter ):
         return segments, contours, hierarchy
     
     @staticmethod
-    def _show_steps(image, contours, good_segments, bad_segments):
+    def _show_steps(image, contours, goodbad_list):
         copy= image.copy()
         copy.fill( (255,255,255) )
         cv2.drawContours(copy, contours, contourIdx=-1, color=(0,0,0))
         show_image_and_wait_for_key( copy, "contours")
-        copy= image.copy()
-        brightness(copy, 0.8)
-        draw_segments( copy, good_segments, (0,255,0) )
-        draw_segments( copy, bad_segments, (0,0,255) )
-        show_image_and_wait_for_key( copy, "filtered segments")
         
-    @staticmethod
-    def _filter_segments( segments, tolerance=0.1 ):
-        '''performs some statistics to remove outliers. returns filtered and bad segments. tolerance is difference of ratio of median to accept'''
-        _, _, median_width, median_height= numpy.median(segments, 0)
-        bad_height= numpy.absolute(segments[:,3]-median_height)/median_height>tolerance
-        bad= bad_height
-        good_segments, bad_segments= (segments[numpy.logical_not(bad)], segments[bad])
-        return good_segments, bad_segments
+        for f_name, good, bad in goodbad_list:
+            copy= image.copy()
+            brightness(copy, 0.8)
+            draw_segments( copy, good, (0,255,0) )
+            draw_segments( copy, bad, (0,0,255) )
+            show_image_and_wait_for_key( copy, "segments filtered by "+f_name)
+
 
     def segment( self, image ):
         segments, contours, hierarchy= self._contour_segment( image )
-        segments= order_segments( segments )
+         
+        goodbad_list= [] #list of tuples of (filter_name, good_segments, bad_segments) after application of each filter
+        for filter_f in self.FILTERS:
+            bad_indexes= filter_f(segments)
+            segments, bad_segments= segments[ True - bad_indexes ], segments[ bad_indexes ]
+            goodbad_list.append( (filter_f.__name__, segments, bad_segments) )
+            if len(segments)==0:
+                raise Exception("0 good segments after filter"+filter_f.__name__+". Cannot proceed")
+        inter_line_distance, number_of_lines, first_line= _guess_interline_size( segments )
         segments= _order_segments( segments )
-        good_segments, bad_segments= ContourSegmenter._filter_segments( segments, self.tolerance)
+        
         if self.show_steps:
-            ContourSegmenter._show_steps( image, contours, good_segments, bad_segments )
-        return good_segments
+            ContourSegmenter._show_steps( image, contours, goodbad_list )
+        return segments

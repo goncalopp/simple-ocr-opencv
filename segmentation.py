@@ -50,6 +50,25 @@ def _filter_large_segments( segments, max_width=30, max_height=50 ):
     large_height= segments[:,3]>max_height
     return large_width + large_height #bool array
 
+def _filter_contained_segments( segments ):
+    '''returns boolean array marking segments that are contained by some other'''
+    segments= segments.astype( numpy.float)
+    x1,y1= segments[:,0], segments[:,1]
+    x2,y2= x1+segments[:,2], y1+segments[:,3]
+    n=len(segments)
+    
+    x1so, x2so,y1so, y2so= map(numpy.argsort, (x1,x2,y1,y2))
+    x1soi,x2soi, y1soi, y2soi= map(numpy.argsort, (x1so, x2so, y1so, y2so)) #inverse transformations
+    o1= numpy.triu(numpy.ones( (n,n) ), k=1).astype(bool) # let rows be x1 and collumns be x2. this array represents where x1<x2
+    o2= numpy.tril(numpy.ones( (n,n) ), k=0).astype(bool) # let rows be x1 and collumns be x2. this array represents where x1>x2
+    
+    a_inside_b_x= o2[x1soi][:,x1soi] * o1[x2soi][:,x2soi] #(x1[a]>x1[b] and x2[a]<x2[b])
+    a_inside_b_y= o2[y1soi][:,y1soi] * o1[y2soi][:,y2soi] #(y1[a]>y1[b] and y2[a]<y2[b])
+    a_inside_b= a_inside_b_x*a_inside_b_y
+    bad= numpy.max(a_inside_b, axis=1)
+    return bad
+
+
 def _guess_interline_size( segments, max_lines=50, confidence1_minimum=1.5, confidence2_minimum=3 ):
     '''guesses and returns text inter-line distance, number of lines, y_position of first line'''
     ys= segments[:,1].astype(numpy.float32)

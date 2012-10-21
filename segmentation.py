@@ -50,6 +50,10 @@ def _filter_large_segments( segments, max_width=30, max_height=50 ):
     large_height= segments[:,3]>max_height
     return large_width + large_height #bool array
 
+def filter_small_area_segments( segments, min_area=45):
+    '''returns boolean array marking segments with area too low to be correct'''
+    return (segments[:,2]*segments[:,3])<min_area
+
 def bool_indexing_to_indexes( bool_array ):
     return [i for i,x in enumerate(bool_array) if x]
 

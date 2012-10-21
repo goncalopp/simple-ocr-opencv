@@ -16,7 +16,7 @@ def _broadcast( src_processor, src_atr_name, dest_processors, dest_atr_name, tra
     value= getattr( src_processor, src_atr_name)
     value= transform_function( value )
     for d in dest_processors:
-        d.set_stored_parameters( **{dest_atr_name: value} )
+        d.set_parameters( **{dest_atr_name: value} )
 
 def create_broadcast( src_atr_name, dest_processors, dest_atr_name=None, transform_function= lambda x:x):
     '''This method creates a function, intended to be called as a 
@@ -46,17 +46,17 @@ class Processor( object ):
         '''sets default parameters'''
         for k,v in self.PARAMETERS.items():
             setattr(self, k, v)
-        self.set_stored_parameters(**args)
+        self.set_parameters(**args)
         self._prehooks= [] #functions (on input) to be executed before processing
         self._poshooks= [] #functions (on output) to be executed after processing
 
-    def get_stored_parameters( self ):
+    def get_parameters( self ):
         '''returns a dictionary with the processor's stored parameters'''
         parameter_names= self.PARAMETERS.keys()
         parameter_values= [getattr(processor, n) for n in parameters_names]
         return dict( zip(parameters_names, parameter_values ) )
         
-    def set_stored_parameters( self, **args ):
+    def set_parameters( self, **args ):
         '''sets the processor stored parameters'''
         for k,v in self.PARAMETERS.items():
             new_value= args.get(k)
@@ -107,7 +107,7 @@ class ProcessorStack( Processor ):
         assert all( isinstance(x, Processor) for x in processor_instances )
         self.processors= processor_instances
 
-    def get_stored_parameters( self ):
+    def get_parameters( self ):
         '''gets from all wrapped processors'''
         d= {}
         for p in self.processors:
@@ -116,12 +116,12 @@ class ProcessorStack( Processor ):
             d.update( dict(zip(parameters_names, parameter_values )) )
         return d
 
-    def set_stored_parameters( self, **args ):
+    def set_parameters( self, **args ):
         '''sets to all wrapped processors'''
         not_used= set()
         not_given=set()
         for p in self.processors:
-            nu, ng= p.set_stored_parameters( **args )
+            nu, ng= p.set_parameters( **args )
             not_used=  not_used.union(nu)
             not_given= not_given.union(ng)
         return not_used, not_given

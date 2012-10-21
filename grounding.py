@@ -1,7 +1,7 @@
 '''various classis for establishing ground truth'''
 
 from files import ImageFile
-from classification import classes_to_numpy
+from classification import classes_to_numpy, BLANK_CLASS
 from segmentation import best_segmenter
 from opencv_utils import background_color, show_image_and_wait_for_key, draw_segments, draw_classes
 import numpy
@@ -38,7 +38,7 @@ class UserGrounder( Grounder ):
         print '''For each shown segment, please write the character that it represents, or spacebar if it's not a character. Press ESC when completed, arrow keys to move'''
         segments= Grounder._createSegments( imagefile )
         i=0
-        classes= [chr(10)]*len(segments) #char(10) is newline. it represents a non-assigned label, and will b filtered
+        classes= [BLANK_CLASS]*len(segments) #char(10) is newline. it represents a non-assigned label, and will b filtered
         done= False
         allowed_chars= map( ord, string.ascii_letters+string.digits )
         while not done:
@@ -62,10 +62,6 @@ class UserGrounder( Grounder ):
             if i<0:
                 i=len(classes)-1
         classes= classes_to_numpy( classes )
-        grounded= classes != 10 #indexes
-        classified_n= numpy.count_nonzero( grounded )
-        print "classified ",classified_n, "characters out of", max(classes.shape)
-        classes= classes[ grounded ]    #filter ungrounded segments
-        segments= segments [ grounded ] #from the arrays
+        print "classified ",numpy.count_nonzero( classes != classes_to_numpy(BLANK_CLASS) ), "characters out of", max(classes.shape)
         imagefile.set_ground( segments, classes )
         

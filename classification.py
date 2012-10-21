@@ -6,6 +6,8 @@ CLASS_DATATYPE=     numpy.uint16
 CLASS_SIZE=         1
 CLASSES_DIRECTION=  0 #vertical - a classes COLUMN
 
+BLANK_CLASS=        chr(10) #marks unclassified elements
+
 def classes_to_numpy( classes ):
     '''given a list of unicode chars, transforms it into a numpy array'''
     import array
@@ -28,6 +30,11 @@ class Classifier( object ):
     def train( self, features, classes ):
         '''trains the classifier with the classified feature vectors'''
         raise NotImplementedError()
+
+    @staticmethod
+    def _filter_unclassified( features, classes ):
+        classified= (classes != classes_to_numpy(BLANK_CLASS)).reshape(-1)
+        return features[classified], classes[classified]
         
     def classify( self, features):
         '''returns the classes of the feature vectors'''
@@ -44,6 +51,7 @@ class KNNClassifier( Classifier ):
             features= numpy.asarray( features, dtype=numpy.float32 )
         if CLASS_DATATYPE!=numpy.float32:
             classes= numpy.asarray( classes, dtype=numpy.float32 )
+        features, classes= Classifier._filter_unclassified( features, classes )
         self.knn.train( features, classes )
         
     def classify( self, features):

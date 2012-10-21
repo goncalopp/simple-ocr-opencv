@@ -4,7 +4,7 @@ from feature_extraction import SimpleFeatureExtractor
 from classification import KNNClassifier
 from ocr import OCR, accuracy, show_differences, reconstruct_chars
 
-segmenter=  ContourSegmenter( blur_radius=5, blocksize=11, c=10, min_area=0, show_steps=True )
+segmenter=  ContourSegmenter( blur_y=5, blur_x=5, block_size=11, c=10)
 extractor=  SimpleFeatureExtractor( feature_size=10, stretch=False )
 classifier= KNNClassifier()
 ocr= OCR( segmenter, extractor, classifier )
@@ -12,7 +12,7 @@ ocr= OCR( segmenter, extractor, classifier )
 ocr.train( ImageFile('digits1') )
 
 test_image= ImageFile('digits2')
-test_classes, test_segments= ocr.ocr( test_image )
+test_classes, test_segments= ocr.ocr( test_image, show_steps=True )
 
 print "accuracy:", accuracy( test_image.ground.classes, test_classes )
 print "OCRed text:\n", reconstruct_chars( test_classes )

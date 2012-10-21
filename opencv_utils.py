@@ -1,6 +1,61 @@
 from numpy_utils import OverflowPreventer
+from processor import DisplayingProcessor, ProcessorStack
 import numpy
 import cv2
+
+class ImageProcessor( DisplayingProcessor ):
+    def display( self, display_before=True ):
+        if display_before:
+            show_image_and_wait_for_key(self._input, "before "+self.__class__.__name__)
+        show_image_and_wait_for_key(self._output,  "after " +self.__class__.__name__)
+    def _process( self, image ):
+        return self._image_processing( image )
+    def _image_processing( self , image ):
+        raise NotImplementedError( str(self.__class__) )
+
+class BrightnessProcessor( ImageProcessor ):
+    '''changes image brightness. 
+    A brightness of -1 will make the image all black; 
+    one of 1 will make the image all white'''
+    PARAMETERS= ImageProcessor.PARAMETERS + {"brightness":0.0}
+    def _image_processing( self , image ):
+        b= self.brightness
+        assert image.dtype==numpy.uint8
+        assert -1<=b<=1
+        image= image.copy()
+        with OverflowPreventer(image) as img:
+            img+=b*256
+        return image
+
+class ContrastProcessor( ImageProcessor ):
+    '''changes image contrast. a scale of 1 will make no changes'''
+    PARAMETERS= ImageProcessor.PARAMETERS + {"scale":1.0, "center":0.5}
+    def _image_processing( self , image ):
+        assert image.dtype==numpy.uint8
+        image= image.copy()
+        s,c= self.scale, self.center
+        c= int(c*256)
+        with OverflowPreventer(image) as img:
+            if scale<=1:
+                img*=scale
+                img+= int(center*(1-scale))
+            else:
+                img-=center*(1 - 1/scale)
+                img*=scale
+        return image
+
+class BlurProcessor( ImageProcessor ):
+    '''changes image contrast. a scale of 1 will make no changes'''
+    PARAMETERS= ImageProcessor.PARAMETERS + {"blur_x":0, "blur_y":0}
+    def _image_processing( self , image ):
+        assert image.dtype==numpy.uint8
+        image= image.copy()
+        x,y= self.blur_x, self.blur_y
+        if x or y:
+            x+= (x+1)%2 #opencv needs a
+            y+= (y+1)%2 #odd number...
+            image = cv2.GaussianBlur(image,(x,y),0)
+        return image
 
 def ask_for_key():
     return cv2.waitKey(0)
@@ -21,26 +76,7 @@ def show_image_and_wait_for_key( image, name="Image" ):
     return ask_for_key()
 
 
-def brightness( image, adjustment=0 ):
-    '''changes image brightness. 
-    An adjustment of -1 will make the image all black; 
-    one of 1 will make the image all white'''
-    assert image.dtype==numpy.uint8
-    assert -1<=adjustment<=1
-    with OverflowPreventer(image) as img:
-        img+=adjustment*256
 
-def contrast( image, scale=1, center=128 ):
-    '''changes image contrast.
-    a scale of 1 will make no changes'''
-    assert image.dtype==numpy.uint8
-    with OverflowPreventer(image) as img:
-        if scale<=1:
-            img*=scale
-            img+= int(center*(1-scale))
-        else:
-            img-=center*(1 - 1/scale)
-            img*=scale
 
 def draw_segments( image , segments, color=(255,0,0), line_width=1):
         '''draws segments on image'''

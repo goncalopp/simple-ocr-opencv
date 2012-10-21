@@ -35,9 +35,11 @@ class OCR( object ):
         features= self.feature_extractor.extract( image_file.image, image_file.ground.segments )
         self.classifier.train( features, image_file.ground.classes )
         
-    def ocr( self, image_file ):
+    def ocr( self, image_file, show_steps=False ):
         '''performs ocr used trained classifier'''
-        segments= self.segmenter.segment( image_file.image )
+        segments= self.segmenter.process( image_file.image )
+        if show_steps:
+            self.segmenter.display()
         features= self.feature_extractor.extract( image_file.image , segments )
         classes= self.classifier.classify( features )
         return classes, segments

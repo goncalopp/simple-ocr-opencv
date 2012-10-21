@@ -13,7 +13,7 @@ class Grounder( object ):
     def _createSegments( imagefile ):
         assert isinstance( imagefile, ImageFile)
         segmenter= best_segmenter( imagefile.image )
-        return segmenter.segment( imagefile.image )
+        return segmenter.process( imagefile.image )
     
     def ground(self, imagefile, external_data):
         '''given an ImageFile, grounds it, through arbirary data (better defined in subclasses)'''

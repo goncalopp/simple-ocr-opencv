@@ -37,6 +37,7 @@ def guess_interline_size( segments, max_lines=50, confidence1_minimum=1.5, confi
     number_of_lines=  i+start_n
     inter_line_distance= numpy.mean(diffs[i])
     first_line= means_list[i][0][0]
+    lines= numpy.array( map(int,means_list[i]) )
     
     #calculate confidence
     betterness= numpy.sort(deviations, axis=0)
@@ -44,7 +45,7 @@ def guess_interline_size( segments, max_lines=50, confidence1_minimum=1.5, confi
     confidence= ( betterness[0] - numpy.mean(betterness) ) / numpy.std(betterness) #number of stddevs
     if confidence<3:
         raise Exception("low confidence")
-    return inter_line_distance, number_of_lines, first_line
+    return lines
 
 def contained_segments_matrix( segments ):
     '''givens a n*n matrix m, n=len(segments), in which m[i,j] means

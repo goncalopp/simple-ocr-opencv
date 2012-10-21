@@ -1,4 +1,4 @@
-from opencv_utils import show_image_and_wait_for_key, BrightnessProcessor, draw_segments
+from opencv_utils import show_image_and_wait_for_key, BrightnessProcessor, draw_segments, draw_lines
 from segmentation_aux import contained_segments_matrix
 from processor import DisplayingProcessor
 import numpy
@@ -9,13 +9,16 @@ class Filter( DisplayingProcessor ):
     PARAMETERS= DisplayingProcessor.PARAMETERS + { "image":numpy.array([]) }
     '''A filter processes given segments, returning only the desirable
     ones'''
-    def display( self, display_before=False ):
+    def display( self, display_before=False, image_override=None ):
         '''shows the effect of this filter'''
-        try:
-            copy= self.image.copy()
-        except AttributeError:
-            raise Exception("You need to set the Filter.image attribute for displaying")
-        copy= BrightnessProcessor(brightness=0.6).process( copy )
+        if not image_override is None:
+            copy= image_override
+        else:
+            try:
+                copy= self.image.copy()
+            except AttributeError:
+                raise Exception("You need to set the Filter.image attribute for displaying")
+            copy= BrightnessProcessor(brightness=0.6).process( copy )
         s, g= self._input, self.good_segments_indexes
         draw_segments( copy, s[g], (0,255,0) )
         draw_segments( copy, s[True-g], (0,0,255) )
@@ -58,4 +61,23 @@ class ContainedFilter( Filter ):
         m= contained_segments_matrix( segments )
         return (True - numpy.max(m, axis=1))
 
-DEFAULT_FILTER_STACK= [LargeFilter, SmallFilter, LargeAreaFilter, ContainedFilter]
+class NearLineFilter( Filter ):
+    PARAMETERS= Filter.PARAMETERS + {"nearline_tolerance":5.0, "lines":numpy.array([])} # percentage distance stddev
+    '''desirable segments have their y near a line'''
+    def _good_segments( self, segments ):
+        if not len(self.lines):
+            raise Exception("NearLineFilter.lines must be set prior to its processing call")
+        ys= segments[:,1]
+        closeness= numpy.array( [numpy.abs(y-self.lines) for y in ys] ) #each row a y, each collumn a distance to each line 
+        line_of_y= numpy.argmin( closeness, axis=1)
+        distance= numpy.min(closeness, axis=1)
+        return distance <= numpy.mean(distance)+self.nearline_tolerance*numpy.std(distance)
+    def display(self, display_before=False):
+        try:
+            copy= self.image.copy()
+        except AttributeError:
+            raise Exception("You need to set the Filter.image attribute for displaying")
+        draw_lines( copy, self.lines )
+        Filter.display( self, display_before, image_override=copy)
+
+DEFAULT_FILTER_STACK= [LargeFilter, SmallFilter, LargeAreaFilter, ContainedFilter, NearLineFilter]

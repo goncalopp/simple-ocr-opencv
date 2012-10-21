@@ -1,7 +1,7 @@
 from opencv_utils import show_image_and_wait_for_key, draw_segments, BlurProcessor
-from segmentation_aux import SegmentOrderer
-from segmentation_filters import DEFAULT_FILTER_STACK
 from processor import DisplayingProcessor, DisplayingProcessorStack, create_broadcast
+from segmentation_aux import SegmentOrderer, guess_interline_size
+from segmentation_filters import DEFAULT_FILTER_STACK, Filter, NearLineFilter
 import numpy
 import cv2
 
@@ -70,5 +70,7 @@ class ContourSegmenter( FullSegmenter ):
         FullSegmenter.__init__(self, **args)
         stack = [c() for c in ContourSegmenter.CLASSES]
         filters= [s for s in stack if isinstance(s, Filter)]
+        i= map(lambda x:x.__class__, filters).index( NearLineFilter ) #position of NearLineFilter
         stack[0].add_prehook( create_broadcast( "_input", filters, "image" ) )
+        filters[i-1].add_poshook( create_broadcast( "_output", filters[i], "lines", guess_interline_size) )
         self.set_processor_stack(stack)

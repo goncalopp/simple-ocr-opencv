@@ -6,7 +6,7 @@ CLASS_DATATYPE=     numpy.uint16
 CLASS_SIZE=         1
 CLASSES_DIRECTION=  0 #vertical - a classes COLUMN
 
-BLANK_CLASS=        chr(10) #marks unclassified elements
+BLANK_CLASS=        chr(35) #marks unclassified elements
 
 def classes_to_numpy( classes ):
     '''given a list of unicode chars, transforms it into a numpy array'''

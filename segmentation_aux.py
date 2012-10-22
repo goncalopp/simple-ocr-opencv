@@ -16,10 +16,36 @@ class SegmentOrderer( Processor ):
         sort_order= numpy.argsort( order )
         return segments[ sort_order ]
 
-def guess_interline_size( segments, max_lines=50, confidence1_minimum=1.5, confidence2_minimum=3 ):
-    '''guesses and returns text inter-line distance, number of lines, y_position of first line'''
+def guess_line_starts( segments, asfloat=False ):
     ys= segments[:,1].astype(numpy.float32)
+    l= _guess_lines( ys )
+    return l if asfloat else map(int, l)
+
+def guess_line_ends( segments, asfloat=False ):
+    ys= numpy.sort((segments[:,1]+segments[:,3]).astype(numpy.float32))
+    l= _guess_lines( ys )
+    return l if asfloat else map(int, l)
+
+def guess_line_starts_and_ends( segments, asfloat=False ):
+    l1= guess_line_starts( segments, asfloat=True )
+    l2= guess_line_ends( segments, asfloat=True )
+    l= numpy.sort(numpy.append( l1, l2 ))
+    return l if asfloat else map(int, l)
     
+def guess_line_starts_ends_and_middles( segments, asfloat=False ):
+    new_list=[]
+    l= guess_line_starts_and_ends( segments, asfloat=True )
+    for i,x in enumerate(l):
+        new_list.append(x)
+        if (i%2)==0:
+            new_list.append( (l[i]+l[i+1])/2 )
+    l= new_list
+    return l if asfloat else map(int, l)
+
+
+
+def _guess_lines( ys, max_lines=50, confidence_minimum=3 ):
+    '''guesses and returns text inter-line distance, number of lines, y_position of first line'''
     means_list, diffs, deviations=[], [], []
     start_n= 3
     for k in range(start_n,max_lines):
@@ -37,15 +63,15 @@ def guess_interline_size( segments, max_lines=50, confidence1_minimum=1.5, confi
     number_of_lines=  i+start_n
     inter_line_distance= numpy.mean(diffs[i])
     first_line= means_list[i][0][0]
-    lines= numpy.array( map(int,means_list[i]) )
+    lines= numpy.array( means_list[i] )
     
     #calculate confidence
     betterness= numpy.sort(deviations, axis=0)
     betterness= 1/(betterness[:-1]/betterness[1:]) #how much better is each solution compared to the next best?
     confidence= ( betterness[0] - numpy.mean(betterness) ) / numpy.std(betterness) #number of stddevs
-    if confidence<3:
+    if confidence<confidence_minimum:
         raise Exception("low confidence")
-    return lines
+    return lines #still floating points
 
 def contained_segments_matrix( segments ):
     '''givens a n*n matrix m, n=len(segments), in which m[i,j] means

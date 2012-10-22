@@ -38,13 +38,6 @@ class RawSegmenter( DisplayingProcessor ):
         #return segments
         raise NotImplementedError()
 
-    def display(self, display_before=False):
-        image= self.image.copy()
-        if display_before:
-            show_image_and_wait_for_key(image, "image before segmentation")
-        draw_segments( image, self.segments)
-        show_image_and_wait_for_key(image, "image after segmentation by "+self.__class__.__name__)
-
     def _process( self, image):
         segments= self._segment(image)
         self.image, self.segments= image, segments
@@ -63,6 +56,16 @@ class RawContourSegmenter( RawSegmenter ):
         segments= segments_to_numpy( [cv2.boundingRect(c) for c in contours] )
         self.contours, self.hierarchy= contours, hierarchy #store, may be needed for debugging
         return segments
+    def display(self, display_before=False):
+        copy= self.image.copy()
+        if display_before:
+            show_image_and_wait_for_key(copy, "image before segmentation")
+        copy.fill( (255,255,255) )
+        cv2.drawContours(copy, self.contours, contourIdx=-1, color=(0,0,0))
+        show_image_and_wait_for_key( copy, "ContourSegmenter contours")
+        copy= self.image.copy()
+        draw_segments( copy, self.segments)
+        show_image_and_wait_for_key(copy, "image after segmentation by "+self.__class__.__name__)
 
 class ContourSegmenter( FullSegmenter ):
     CLASSES= [BlurProcessor, RawContourSegmenter]+DEFAULT_FILTER_STACK+[SegmentOrderer]

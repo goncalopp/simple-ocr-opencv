@@ -57,8 +57,15 @@ class BlurProcessor( ImageProcessor ):
             image = cv2.GaussianBlur(image,(x,y),0)
         return image
 
-def ask_for_key():
-    return cv2.waitKey(0)
+def ask_for_key( return_arrow_keys=True ):
+    key=128
+    while key > 127:
+        key=cv2.waitKey(0)
+        if return_arrow_keys:
+            if key in (65362,65364,65361,65363): #up, down, left, right
+                return key
+        key %= 256
+    return key
 
 def background_color( image, numpy_result=True ):
     result= numpy.median(numpy.median(image, 0),0).astype( numpy.int )
@@ -94,4 +101,3 @@ def draw_classes( image, segments, classes ):
     for s,c in zip(segments, classes):
         x,y,w,h=s
         cv2.putText(image,c,(x,y),0,0.5,(128,128,128))
-

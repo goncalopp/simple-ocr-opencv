@@ -67,10 +67,9 @@ class RawContourSegmenter( RawSegmenter ):
 class ContourSegmenter( FullSegmenter ):
     CLASSES= [BlurProcessor, RawContourSegmenter]+DEFAULT_FILTER_STACK+[SegmentOrderer]
     def __init__(self, **args):
-        FullSegmenter.__init__(self, **args)
         stack = [c() for c in ContourSegmenter.CLASSES]
+        FullSegmenter.__init__(self, stack, **args)
         filters= [s for s in stack if isinstance(s, Filter)]
         i= map(lambda x:x.__class__, filters).index( NearLineFilter ) #position of NearLineFilter
         stack[0].add_prehook( create_broadcast( "_input", filters, "image" ) )
         filters[i-1].add_poshook( create_broadcast( "_output", filters[i], "lines", guess_interline_size) )
-        self.set_processor_stack(stack)

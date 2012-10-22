@@ -16,7 +16,7 @@ def _broadcast( src_processor, src_atr_name, dest_processors, dest_atr_name, tra
     value= getattr( src_processor, src_atr_name)
     value= transform_function( value )
     for d in dest_processors:
-        d.set_parameters( **{dest_atr_name: value} )
+        setattr(d, dest_atr_name, value )
 
 def create_broadcast( src_atr_name, dest_processors, dest_atr_name=None, transform_function= lambda x:x):
     '''This method creates a function, intended to be called as a 
@@ -53,8 +53,8 @@ class Processor( object ):
     def get_parameters( self ):
         '''returns a dictionary with the processor's stored parameters'''
         parameter_names= self.PARAMETERS.keys()
-        parameter_values= [getattr(processor, n) for n in parameters_names]
-        return dict( zip(parameters_names, parameter_values ) )
+        parameter_values= [getattr(processor, n) for n in parameter_names]
+        return dict( zip(parameter_names, parameter_values ) )
         
     def set_parameters( self, **args ):
         '''sets the processor stored parameters'''
@@ -112,8 +112,8 @@ class ProcessorStack( Processor ):
         d= {}
         for p in self.processors:
             parameter_names= p.PARAMETERS.keys()
-            parameter_values= [getattr(p, n) for n in parameters_names]
-            d.update( dict(zip(parameters_names, parameter_values )) )
+            parameter_values= [getattr(p, n) for n in parameter_names]
+            d.update( dict(zip(parameter_names, parameter_values )) )
         return d
 
     def set_parameters( self, **args ):

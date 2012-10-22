@@ -6,7 +6,7 @@ import numpy
 
 
 class Filter( DisplayingProcessor ):
-    PARAMETERS= DisplayingProcessor.PARAMETERS + { "image":numpy.array([]) }
+    PARAMETERS= DisplayingProcessor.PARAMETERS
     '''A filter processes given segments, returning only the desirable
     ones'''
     def display( self, display_before=False, image_override=None ):
@@ -62,7 +62,7 @@ class ContainedFilter( Filter ):
         return (True - numpy.max(m, axis=1))
 
 class NearLineFilter( Filter ):
-    PARAMETERS= Filter.PARAMETERS + {"nearline_tolerance":5.0, "lines":numpy.array([])} # percentage distance stddev
+    PARAMETERS= Filter.PARAMETERS + {"nearline_tolerance":5.0} # percentage distance stddev
     '''desirable segments have their y near a line'''
     def _good_segments( self, segments ):
         if not len(self.lines):

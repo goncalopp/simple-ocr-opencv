@@ -57,7 +57,7 @@ def guess_line_starts_ends_and_middles( segments, asfloat=False ):
     l= new_list
     return l if asfloat else map(int, l)
 
-def _guess_lines( ys, max_lines=50, confidence_minimum=0.3 ):
+def _guess_lines( ys, max_lines=50, confidence_minimum=0.2 ):
     '''guesses and returns text inter-line distance, number of lines, y_position of first line'''
     compactness_list, means_list, diffs, deviations= [], [], [], []
     start_n= 1
@@ -75,12 +75,13 @@ def _guess_lines( ys, max_lines=50, confidence_minimum=0.3 ):
         tmp3= numpy.sum( (tmp1-numpy.mean(tmp1))**2) #root mean square deviation, more sensitive than std
         diffs.append(tmp1)
         deviations.append(tmp3)
-
-    compactness_list= numpy.diff(-1/numpy.array( compactness_list ))
+    
+    compactness_list= numpy.diff(numpy.log( numpy.array(compactness_list)+0.01 )) #sum small amount to avoid log(0)
     deviations= numpy.array( deviations[1:] )
+    deviations[0]= numpy.mean( deviations[1:] )
     compactness_list= (compactness_list-numpy.mean(compactness_list))/numpy.std(compactness_list)
     deviations= (deviations-numpy.mean(deviations))/numpy.std(deviations)
-    aglomerated_metric= 0.0*compactness_list + 0.9*deviations
+    aglomerated_metric= 0.1*compactness_list + 0.9*deviations
     
     i= numpy.argmin(aglomerated_metric)+1
     lines= numpy.array( means_list[i] )

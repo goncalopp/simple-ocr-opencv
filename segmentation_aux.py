@@ -16,6 +16,19 @@ class SegmentOrderer( Processor ):
         sort_order= numpy.argsort( order )
         return segments[ sort_order ]
 
+def guess_segments_lines( segments, nearline_tolerance=5.0 ):
+    '''given segments, outputs a array of line numbers, or -1 if it 
+    doesn't belong to any'''
+    ys= segments[:,1]    
+    lines= guess_line_starts_ends_and_middles( segments, asfloat=True )
+    closeness= numpy.array( [numpy.abs(y-lines) for y in ys] ) #each row a y, each collumn a distance to each line 
+    line_of_y= numpy.argmin( closeness, axis=1)
+    distance= numpy.min(closeness, axis=1)
+    bad= distance > numpy.mean(distance)+nearline_tolerance*numpy.std(distance)
+    line_of_y/=3 #since we have 3 "lines" per line by calling guess_line_starts_ends_and_middles
+    line_of_y[bad]= -1
+    return line_of_y
+    
 def guess_line_starts( segments, asfloat=False ):
     ys= segments[:,1].astype(numpy.float32)
     l= _guess_lines( ys )
@@ -29,6 +42,8 @@ def guess_line_ends( segments, asfloat=False ):
 def guess_line_starts_and_ends( segments, asfloat=False ):
     l1= guess_line_starts( segments, asfloat=True )
     l2= guess_line_ends( segments, asfloat=True )
+    if len(l1)!=len(l2):
+        raise Exception("different number of lines")
     l= numpy.sort(numpy.append( l1, l2 ))
     return l if asfloat else map(int, l)
     

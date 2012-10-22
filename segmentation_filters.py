@@ -1,5 +1,5 @@
 from opencv_utils import show_image_and_wait_for_key, BrightnessProcessor, draw_segments, draw_lines
-from segmentation_aux import contained_segments_matrix
+from segmentation_aux import contained_segments_matrix, guess_segments_lines, guess_line_starts_ends_and_middles
 from processor import DisplayingProcessor
 import numpy
 
@@ -65,13 +65,10 @@ class NearLineFilter( Filter ):
     PARAMETERS= Filter.PARAMETERS + {"nearline_tolerance":5.0} # percentage distance stddev
     '''desirable segments have their y near a line'''
     def _good_segments( self, segments ):
-        if not len(self.lines):
-            raise Exception("NearLineFilter.lines must be set prior to its processing call")
-        ys= segments[:,1]
-        closeness= numpy.array( [numpy.abs(y-self.lines) for y in ys] ) #each row a y, each collumn a distance to each line 
-        line_of_y= numpy.argmin( closeness, axis=1)
-        distance= numpy.min(closeness, axis=1)
-        return distance <= numpy.mean(distance)+self.nearline_tolerance*numpy.std(distance)
+        lines= guess_segments_lines(segments.copy(), nearline_tolerance=self.nearline_tolerance)
+        good= lines!=-1
+        return good
+        
     def display(self, display_before=False):
         try:
             copy= self.image.copy()

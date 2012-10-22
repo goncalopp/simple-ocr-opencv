@@ -139,7 +139,5 @@ class DisplayingProcessorStack( ProcessorStack ):
         else:
             pr= self.processors
         for p in pr:
-            try:
+            if hasattr(p, "display"):
                 p.display( display_before= False )
-            except AttributeError: #there's no display method?
-                pass

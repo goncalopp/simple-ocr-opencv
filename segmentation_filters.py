@@ -1,8 +1,13 @@
 from opencv_utils import show_image_and_wait_for_key, BrightnessProcessor, draw_segments, draw_lines
-from segmentation_aux import contained_segments_matrix, guess_segments_lines, guess_line_starts_ends_and_middles
-from processor import DisplayingProcessor
+from segmentation_aux import contained_segments_matrix, LineFinder, guess_segments_lines
+from processor import DisplayingProcessor, create_broadcast
 import numpy
 
+
+def create_default_filter_stack():
+    stack= [LargeFilter(), SmallFilter(), LargeAreaFilter(), ContainedFilter(), LineFinder(), NearLineFilter()]
+    stack[4].add_poshook( create_broadcast( "lines_topmiddlebottoms", stack[5] ) )
+    return stack
 
 
 class Filter( DisplayingProcessor ):
@@ -65,16 +70,6 @@ class NearLineFilter( Filter ):
     PARAMETERS= Filter.PARAMETERS + {"nearline_tolerance":5.0} # percentage distance stddev
     '''desirable segments have their y near a line'''
     def _good_segments( self, segments ):
-        lines= guess_segments_lines(segments.copy(), nearline_tolerance=self.nearline_tolerance)
+        lines= guess_segments_lines(segments, self.lines_topmiddlebottoms, nearline_tolerance=self.nearline_tolerance)
         good= lines!=-1
         return good
-        
-    def display(self, display_before=False):
-        try:
-            copy= self.image.copy()
-        except AttributeError:
-            raise Exception("You need to set the Filter.image attribute for displaying")
-        draw_lines( copy, self.lines )
-        Filter.display( self, display_before, image_override=copy)
-
-DEFAULT_FILTER_STACK= [LargeFilter, SmallFilter, LargeAreaFilter, ContainedFilter, NearLineFilter]

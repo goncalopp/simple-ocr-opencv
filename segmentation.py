@@ -21,10 +21,6 @@ def segments_to_numpy( segments ):
     segments= segments if SEGMENTS_DIRECTION==0 else numpy.transpose(segments)
     return segments
 
-def best_segmenter(image):
-    '''returns a segmenter instance which segments the given image well'''
-    return ContourSegmenter()
-
 def region_from_segment( image, segment ):
     '''given a segment (rectangle) and an image, returns it's corresponding subimage'''
     x,y,w,h= segment

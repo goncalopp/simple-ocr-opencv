@@ -36,12 +36,12 @@ class ContrastProcessor( ImageProcessor ):
         s,c= self.scale, self.center
         c= int(c*256)
         with OverflowPreventer(image) as img:
-            if scale<=1:
-                img*=scale
-                img+= int(center*(1-scale))
+            if s<=1:
+                img*=s
+                img+= int(c*(1-s))
             else:
-                img-=center*(1 - 1/scale)
-                img*=scale
+                img-=c*(1 - 1/s)
+                img*=s
         return image
 
 class BlurProcessor( ImageProcessor ):

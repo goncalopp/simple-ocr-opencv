@@ -14,16 +14,13 @@ class Filter( DisplayingProcessor ):
     PARAMETERS= DisplayingProcessor.PARAMETERS
     '''A filter processes given segments, returning only the desirable
     ones'''
-    def display( self, display_before=False, image_override=None ):
+    def display( self, display_before=False):
         '''shows the effect of this filter'''
-        if not image_override is None:
-            copy= image_override
-        else:
-            try:
-                copy= self.image.copy()
-            except AttributeError:
-                raise Exception("You need to set the Filter.image attribute for displaying")
-            copy= BrightnessProcessor(brightness=0.6).process( copy )
+        try:
+            copy= self.image.copy()
+        except AttributeError:
+            raise Exception("You need to set the Filter.image attribute for displaying")
+        copy= BrightnessProcessor(brightness=0.6).process( copy )
         s, g= self._input, self.good_segments_indexes
         draw_segments( copy, s[g], (0,255,0) )
         draw_segments( copy, s[True-g], (0,0,255) )

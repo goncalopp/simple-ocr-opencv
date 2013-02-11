@@ -45,7 +45,7 @@ class ImageFile( object ):
         good_path= try_extensions( image_path, IMAGE_EXTENSIONS ) 
         good_path= try_extensions( os.path.join( DATA_DIRECTORY, image_path ), IMAGE_EXTENSIONS )
         if not good_path:
-            raise Exception( "could not find file: "+path)
+            raise Exception( "could not find file: "+image_path)
         self.image_path=     good_path
         self.image= cv2.imread(self.image_path)
         basename= split_extension(good_path)[0]

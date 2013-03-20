@@ -14,7 +14,8 @@ def classes_to_numpy( classes ):
     #utf-32 starts with constant ''\xff\xfe\x00\x00', then has little endian 32 bits chars
     #this assumes little endian architecture!
     assert unichr(15).encode('utf-32')=='\xff\xfe\x00\x00\x0f\x00\x00\x00'
-    int_classes= array.array( "L", "".join(classes).encode('utf-32')[4:])
+    assert array.array("I").itemsize==4
+    int_classes= array.array( "I", "".join(classes).encode('utf-32')[4:])
     assert len(int_classes) == len(classes)
     classes=  numpy.array( int_classes,  dtype=CLASS_DATATYPE, ndmin=2) #each class in a column. numpy is strange :(
     classes= classes if CLASSES_DIRECTION==1 else numpy.transpose(classes)

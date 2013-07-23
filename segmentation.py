@@ -60,7 +60,7 @@ class RawContourSegmenter( RawSegmenter ):
         copy= self.image.copy()
         if display_before:
             show_image_and_wait_for_key(copy, "image before segmentation")
-        copy.fill( (255,255,255) )
+            copy.fill( (255,255,255) )
         cv2.drawContours(copy, self.contours, contourIdx=-1, color=(0,0,0))
         show_image_and_wait_for_key( copy, "ContourSegmenter contours")
         copy= self.image.copy()

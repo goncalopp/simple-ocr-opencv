@@ -24,7 +24,7 @@ class BrightnessProcessor( ImageProcessor ):
         assert -1<=b<=1
         image= image.copy()
         with OverflowPreventer(image) as img:
-            img+=b*256
+            img+=int(b*256)
         return image
 
 class ContrastProcessor( ImageProcessor ):

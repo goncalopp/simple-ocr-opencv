@@ -1,4 +1,4 @@
-A simple pythonic OCR engine using opencv and numpy.
+A simple pythonic(Python 2.7) OCR engine using opencv 3.0.0 and numpy.
 
 Originally inspired by
 http://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python

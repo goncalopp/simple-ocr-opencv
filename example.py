@@ -10,10 +10,9 @@ classifier= KNNClassifier()
 ocr= OCR( segmenter, extractor, classifier )
 
 ocr.train( ImageFile('digits1') )
-
 test_image= ImageFile('digits2')
 test_classes, test_segments= ocr.ocr( test_image, show_steps=True )
 
-print "accuracy:", accuracy( test_image.ground.classes, test_classes )
+#print "accuracy:", accuracy( test_image.ground.classes, test_classes )
 print "OCRed text:\n", reconstruct_chars( test_classes )
 show_differences( test_image.image, test_segments, test_image.ground.classes, test_classes)

@@ -28,12 +28,20 @@ class OCR( object ):
         self.feature_extractor= feature_extractor
         self.classifier= classifier
 
-    def train( self, image_file ):
+    def train( self, *args ):
         '''feeds the training data to the OCR'''
-        if not image_file.isGrounded():
+        if not args[0]:
             raise Exception("The provided file is not grounded")
-        features= self.feature_extractor.extract( image_file.image, image_file.ground.segments )
-        self.classifier.train( features, image_file.ground.classes )
+        features = self.feature_extractor.extract(args[0].image,args[0].ground.segments)
+        ground_data = args[0].ground.classes
+        '''taking the first data set as default'''
+        for i in range(1,len(args)):
+            if not args[i].isGrounded():
+                raise Exception("The provided file is not grounded")
+            temp_features = self.feature_extractor.extract( args[i].image, args[i].ground.segments )
+            features=numpy.concatenate((features,temp_features),axis=0)
+            ground_data=numpy.concatenate((ground_data,args[i].ground.classes),axis=0)
+        self.classifier.train( features, ground_data )
         
     def ocr( self, image_file, show_steps=False ):
         '''performs ocr used trained classifier'''

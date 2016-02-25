@@ -13,7 +13,7 @@ ocr= OCR( segmenter, extractor, classifier )
 
 ocr.train( ImageFile('digits1'),ImageFile('alpha'))
 
-test_image= ImageFile('alpha2')
+test_image= ImageFile('alpha')
 test_classes, test_segments= ocr.ocr( test_image, show_steps=True )
 
 print "accuracy:", accuracy( test_image.ground.classes, test_classes )

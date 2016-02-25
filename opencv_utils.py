@@ -24,7 +24,7 @@ class BrightnessProcessor( ImageProcessor ):
         assert -1<=b<=1
         image= image.copy()
         with OverflowPreventer(image) as img:
-            img+=b*256
+            img+=int(b*256)
         return image
 
 class ContrastProcessor( ImageProcessor ):
@@ -58,6 +58,7 @@ class BlurProcessor( ImageProcessor ):
         return image
 
 def ask_for_key( return_arrow_keys=True ):
+    '''Waits for the user to enter a key to proceed to next step'''
     key=128
     while key > 127:
         key=cv2.waitKey(0)

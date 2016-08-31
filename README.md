@@ -58,4 +58,4 @@ Please check `example.py` for basic usage with the existing pre-grounded images.
 
 You can use your own images, by placing them on the `data` directory. 
 Grounding images interactively can be accomplished by using `grouding.UserGrounder`.
-For more details see [Issue 2](https://github.com/goncalopp/simple-ocr-opencv/issues/2)
+For more details check `example_grounding.py`

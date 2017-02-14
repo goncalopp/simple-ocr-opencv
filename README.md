@@ -1,4 +1,4 @@
-### Simple Python OCR
+# Simple Python OCR
 This repository is a fork of [simple-ocr-opencv](https://github.com/goncalopp/simple-ocr-opencv) by Goncalopp, with the
 goal of turning this engine-project with examples into a working library for everyone
 to use. Currently, this project is not released under a LICENSE. Copying is only allowed
@@ -7,11 +7,9 @@ when you have explicit permission of the authors, at this point full copyright a
     Copyright (C) 2016-2017 by Goncalopp and RedFantom
     All authors are the copyright owners of their respective additions
 
-Originally inspired by
-http://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python
+Originally inspired by [this question](http://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python) on StackOverflow.
 
-Essential Concepts
-==================
+### Essential Concepts
 
 #### Segmentation
 
@@ -46,8 +44,7 @@ See [ground truth][].
 [k-NN algorithm]: https://en.wikipedia.org/wiki/K-nearest_neighbors_classification
 [ground truth]: https://en.wikipedia.org/wiki/Ground_truth
 
-How to understand this project
-==============================
+#### How to understand this project
 
 Unfortunately, documentation is a bit sparse at the moment (I 
 gladly accept contributions).
@@ -58,8 +55,7 @@ If you need any help, don't hesitate to contact me. You can find my
 email on my github profile.
 
 
-How to use
-==========
+#### How to use
 
 Please check `example.py` for basic usage with the existing pre-grounded images.
 

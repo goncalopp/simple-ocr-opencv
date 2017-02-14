@@ -4,7 +4,7 @@ goal of turning this engine-project with examples into a working library for eve
 to use. Currently, this project is not released under a LICENSE. Copying is only allowed
 when you have explicit permission of the authors, at this point full copyright applies.
 
-    Copyright (C) 20116-2017 by Goncalopp and RedFantom
+    Copyright (C) 2016-2017 by Goncalopp and RedFantom
     All authors are the copyright owners of their respective additions
 
 Originally inspired by

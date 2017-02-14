@@ -1,4 +1,11 @@
-A simple pythonic OCR engine using opencv and numpy.
+### Simple Python OCR
+This repository is a fork of [simple-ocr-opencv](https://github.com/goncalopp/simple-ocr-opencv) by Goncalopp, with the
+goal of turning this engine-project with examples into a working library for everyone
+to use. Currently, this project is not released under a LICENSE. Copying is only allowed
+when you have explicit permission of the authors, at this point full copyright applies.
+
+    Copyright (C) 20116-2017 by Goncalopp and RedFantom
+    All authors are the copyright owners of their respective additions
 
 Originally inspired by
 http://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python

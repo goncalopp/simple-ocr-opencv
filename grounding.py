@@ -40,6 +40,8 @@ class UserGrounder(Grounder):
             segments = imagefile.ground.segments
         else:
             classes = [BLANK_CLASS] * len(segments)
+            # char(10) is newline. it represents a non-assigned label, and will b filtered
+            classes = [BLANK_CLASS] * len(segments)
         done = False
         allowed_chars = map(ord, string.digits + string.letters + string.punctuation)
         while not done:

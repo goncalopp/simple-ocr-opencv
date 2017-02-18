@@ -3,7 +3,7 @@ required: sudo
 python:
     "2.7"
 before_install:
-    - wget https://github.com/milq/code/blob/master/scripts/bash/install-opencv.sh
+    - wget https://raw.githubusercontent.com/milq/code/master/scripts/bash/install-opencv.sh
     - sudo chmod +x install-opencv.sh
     - sudo bash install-opencv.sh
 script: python testing.py

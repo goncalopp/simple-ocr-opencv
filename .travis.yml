@@ -8,6 +8,7 @@ required: sudo
 python:
     "2.7"
 before_install:
+  - pwd
   - travis_retry git clone --depth 1 https://github.com/Itseez/opencv.git $DEPS_DIR/opencv
   - mkdir $OPENCV_BUILD_DIR && cd $OPENCV_BUILD_DIR
 

@@ -1,6 +1,6 @@
 import unittest
 from files import ImageFile
-from grounding import TestingGrounder
+from grounding import TextGrounder
 from segmentation import ContourSegmenter
 from feature_extraction import SimpleFeatureExtractor
 from classification import KNNClassifier
@@ -9,7 +9,7 @@ from ocr import OCR, reconstruct_chars
 
 class Testing(unittest.TestCase):
     def test_grounding_digits(self):
-        grounder = TestingGrounder()
+        grounder = TextGrounder()
         self.assertTrue(grounder)
         digits = ImageFile('digits1')
         self.assertTrue(digits)
@@ -30,7 +30,7 @@ class Testing(unittest.TestCase):
         self.assertTrue(digits.is_grounded())
 
     def test_grounding_raise(self):
-        grounder = TestingGrounder()
+        grounder = TextGrounder()
         digits = ImageFile('digits1')
         segmenter = ContourSegmenter()
         segments = segmenter.process(digits.image)

@@ -31,8 +31,8 @@ class UserGrounder( Grounder ):
         print '''For each shown segment, please write the character that it represents, or spacebar if it's not a character. To undo a classification, press backspace. Press ESC when completed, arrow keys to move'''
         i=0
         if imagefile.isGrounded():
-            classes= classes_from_numpy( imagefile.ground.classes)
-            segments= imagefile.ground.segments
+            classes = classes_from_numpy(imagefile.ground.classes)
+            segments = imagefile.ground.segments
         else:
             classes= [BLANK_CLASS]*len(segments) #char(10) is newline. it represents a non-assigned label, and will b filtered
         done= False
@@ -89,6 +89,14 @@ class TestingGrounder(Grounder):
             if key in allowed_chars:
                 classes[i] = unichr(key)
                 i += 1
+=======
+                classes[i] = unichr(key)
+                i += 1
+            if i >= len(classes):
+                i = 0
+            if i < 0:
+                i = len(classes) - 1
+>>>>>>> 295b1e5... Removed obsolete TestingGrounder
 
         classes = numpy.array(classes)
         is_segment = classes != NOT_A_SEGMENT

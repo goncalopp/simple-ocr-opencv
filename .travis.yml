@@ -1,6 +1,8 @@
 language: python
+required: sudo
 python:
     "2.7"
 before_install:
-    - pip install opencv-python
+    - sudo apt-get install libopencv-dev
+    - python-opencv
 script: python testing.py

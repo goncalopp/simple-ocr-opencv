@@ -8,7 +8,6 @@ required: sudo
 python:
     "2.7"
 before_install:
-  - pwd
   - travis_retry git clone --depth 1 https://github.com/Itseez/opencv.git $DEPS_DIR/opencv
   - mkdir $OPENCV_BUILD_DIR && cd $OPENCV_BUILD_DIR
 
@@ -26,5 +25,5 @@ before_install:
   - echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig" | sudo tee -a /etc/bash.bashrc
   - echo "export PKG_CONFIG_PATH" | sudo tee -a /etc/bash.bashrc
   - export PYTHONPATH=$OPENCV_BUILD_DIR/lib/python3.3/site-packages:$PYTHONPATH
-  - cd ~/RedFantom/simple-ocr-opencv
+  - cd /home/travis/build/RedFantom/simple-ocr-opencv
 script: python testing.py

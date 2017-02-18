@@ -83,6 +83,8 @@ class TestingGrounder(Grounder):
             classes = [BLANK_CLASS] * len(
                 segments)  # char(10) is newline. it represents a non-assigned label, and will b filtered
         allowed_chars = map(ord, string.digits + string.letters + string.punctuation)
+        if len(characters) != len(segments):
+            raise ValueError("Either too many or too little characters provided to the grounder")
         for key in characters:
             if key in allowed_chars:
                 classes[i] = unichr(key)

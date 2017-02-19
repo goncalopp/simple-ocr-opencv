@@ -1,4 +1,8 @@
-from opencv_utils import show_image_and_wait_for_key, BrightnessProcessor, draw_segments, draw_lines
+# Written by Goncalopp and RedFantom
+# Thranta Squadron GSF CombatLog Parser, Copyright (C) 2016 by Goncalopp and RedFantom
+# All additions are under the copyright of their respective authors
+# For license see LICENSE
+from opencv_utils import show_image_and_wait_for_key, BrightnessProcessor, draw_segments
 from segmentation_aux import contained_segments_matrix, LineFinder, guess_segments_lines
 from processor import DisplayingProcessor, create_broadcast
 import numpy

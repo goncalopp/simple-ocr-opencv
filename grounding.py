@@ -1,3 +1,7 @@
+# Written by Goncalopp and RedFantom
+# Thranta Squadron GSF CombatLog Parser, Copyright (C) 2016 by Goncalopp and RedFantom
+# All additions are under the copyright of their respective authors
+# For license see LICENSE
 '''various classis for establishing ground truth'''
 
 from files import ImageFile

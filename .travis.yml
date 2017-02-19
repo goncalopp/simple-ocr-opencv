@@ -10,4 +10,3 @@ script: nosetests
 after_success:
   - coverage run nosetests
   - coveralls
-

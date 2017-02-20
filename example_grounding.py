@@ -7,5 +7,5 @@ new_image = ImageFile('digits1')
 segments = segmenter.process(new_image.image)
 
 grounder = UserGrounder()
-grounder.ground(new_image, segments);
+grounder.ground(new_image, segments)
 new_image.ground.write()

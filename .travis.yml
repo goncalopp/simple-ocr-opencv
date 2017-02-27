@@ -27,3 +27,6 @@ before_install:
   - export PYTHONPATH=$OPENCV_BUILD_DIR/lib/python3.3/site-packages:$PYTHONPATH
   - cd /home/travis/build/RedFantom/simple-ocr-opencv
 script: python testing.py
+after_success:
+  - coverage run testing.py
+  - codecov

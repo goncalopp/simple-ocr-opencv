@@ -89,15 +89,10 @@ class TestingGrounder(Grounder):
             if key in allowed_chars:
                 classes[i] = unichr(key)
                 i += 1
-=======
-                classes[i] = unichr(key)
-                i += 1
             if i >= len(classes):
                 i = 0
             if i < 0:
                 i = len(classes) - 1
->>>>>>> 295b1e5... Removed obsolete TestingGrounder
-
         classes = numpy.array(classes)
         is_segment = classes != NOT_A_SEGMENT
         classes = classes[is_segment]

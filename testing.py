@@ -6,6 +6,7 @@ from feature_extraction import SimpleFeatureExtractor
 from classification import KNNClassifier
 from ocr import OCR, reconstruct_chars
 import mock
+import opencv_utils
 
 
 class Testing(unittest.TestCase):
@@ -94,6 +95,26 @@ class TestOCR(unittest.TestCase):
                                                      "07816406286208998628034825342117067982148086513282306647093844609"
                                                      "55058223172535940812848111745028410270193852110555964462294895493"
                                                      "038196442881097566593344612847")
+
+
+class TestImprovements(unittest.TestCase):
+    def test_opencv_brightness_raise(self):
+        image = ImageFile('digits1')
+        processor = opencv_utils.BrightnessProcessor(brightness=2.0)
+        self.assertRaises(AssertionError, lambda: processor._process(image.image))
+
+    def test_opencv_brightness(self):
+        image = ImageFile('digits1')
+        processor = opencv_utils.BrightnessProcessor(brightness=0.5)
+        processor._process(image.image)
+        # TODO: Add checking and try display() function
+        # TODO: Verify the result
+
+    # TODO: Check other ImageProcessors
+
+    def test_opencv_imageprocesser(self):
+        processor = opencv_utils.ImageProcessor()
+        self.assertRaises(NotImplementedError, lambda: processor._image_processing(object))
 
 unittest.main()
 

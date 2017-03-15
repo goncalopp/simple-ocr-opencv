@@ -48,7 +48,7 @@ class RawContourSegmenter( RawSegmenter ):
         self.image= image
         image= cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
         image = cv2.adaptiveThreshold(image, maxValue=255, adaptiveMethod=cv2.ADAPTIVE_THRESH_GAUSSIAN_C, thresholdType=cv2.THRESH_BINARY, blockSize=self.block_size, C=self.c)
-        contours,hierarchy = cv2.findContours(image,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+        _,contours,hierarchy = cv2.findContours(image,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
         segments= segments_to_numpy( [cv2.boundingRect(c) for c in contours] )
         self.contours, self.hierarchy= contours, hierarchy #store, may be needed for debugging
         return segments

@@ -1,5 +1,5 @@
 # Written by Goncalopp and RedFantom
-# Thranta Squadron GSF CombatLog Parser, Copyright (C) 2016 by Goncalopp and RedFantom
+# Simple Python OCR, Copyright (C) 2016 by Goncalopp and RedFantom
 # All additions are under the copyright of their respective authors
 # For license see LICENSE
 from opencv_utils import show_image_and_wait_for_key, draw_segments

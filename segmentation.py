@@ -31,9 +31,7 @@ def region_from_segment(image, segment):
 
 
 class RawSegmenter(DisplayingProcessor):
-    """
-    A image segmenter. input is image, output is segments
-    """
+    """A image segmenter. input is image, output is segments"""
 
     def _segment(self, image):
         """segments an opencv image for OCR. returns list of 4-element tuples (x,y,width, height)."""

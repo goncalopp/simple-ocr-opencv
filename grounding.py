@@ -1,6 +1,4 @@
-"""
-various classis for establishing ground truth
-"""
+"""various classes for establishing ground truth"""
 
 from classification import classes_to_numpy, classes_from_numpy, BLANK_CLASS
 from opencv_utils import show_image_and_wait_for_key, draw_segments, draw_classes
@@ -20,8 +18,7 @@ class TextGrounder(Grounder):
     """labels from a string"""
 
     def ground(self, imagefile, segments, text):
-        """
-        tries to grounds from a simple string            """
+        """tries to grounds from a simple string"""
         text = unicode(text)
         text = filter(lambda c: c in string.ascii_letters + string.digits, list(text))
         if len(segments) != len(text):
@@ -42,8 +39,7 @@ class UserGrounder(Grounder):
             classes = classes_from_numpy(imagefile.ground.classes)
             segments = imagefile.ground.segments
         else:
-            classes = [BLANK_CLASS] * len(
-                segments)  # char(10) is newline. it represents a non-assigned label, and will b filtered
+            classes = [BLANK_CLASS] * len(segments)
         done = False
         allowed_chars = map(ord, string.digits + string.letters + string.punctuation)
         while not done:

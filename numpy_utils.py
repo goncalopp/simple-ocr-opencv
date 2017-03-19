@@ -8,7 +8,7 @@ class OverflowPreventer(object):
     array= numpy.array( [255], dtype=numpy.uint8 )
     with OverflowPreventer( array ) as prevented:
         prevented+=1
-    print array'''
+    print array
     """
 
     inverse_operator = {'__iadd__': '__sub__', '__isub__': '__add__', '__imul__': '__div__', '__idiv__': '__mul__'}

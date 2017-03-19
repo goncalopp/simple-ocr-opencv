@@ -8,11 +8,7 @@ class SegmentOrderer(Processor):
     PARAMETERS = Processor.PARAMETERS + {"max_line_height": 20, "max_line_width": 10000}
 
     def _process(self, segments):
-        """
-        sort segments in read order - left to right, up to down
-        :param segments:
-        :return:
-        """
+        """sort segments in read order - left to right, up to down"""
         # sort_f= lambda r: max_line_width*(r[1]/max_line_height)+r[0]
         # segments= sorted(segments, key=sort_f)
         # segments= segments_to_numpy( segments )
@@ -27,13 +23,7 @@ class SegmentOrderer(Processor):
 class LineFinder(DisplayingProcessor):
     @staticmethod
     def _guess_lines(ys, max_lines=50, confidence_minimum=0.0):
-        """
-        guesses and returns text inter-line distance, number of lines, y_position of first line
-        :param ys:
-        :param max_lines:
-        :param confidence_minimum:
-        :return:
-        """
+        """guesses and returns text inter-line distance, number of lines, y_position of first line"""
         ys = ys.astype(numpy.float32)
         compactness_list, means_list, diffs, deviations = [], [], [], []
         start_n = 1
@@ -98,10 +88,6 @@ def guess_segments_lines(segments, lines, nearline_tolerance=5.0):
     """
     given segments, outputs a array of line numbers, or -1 if it
     doesn't belong to any
-    :param segments:
-    :param lines:
-    :param nearline_tolerance:
-    :return:
     """
     ys = segments[:, 1]
     closeness = numpy.abs(numpy.subtract.outer(ys, lines))  # each row a y, each collumn a distance to each line
@@ -116,8 +102,6 @@ def contained_segments_matrix(segments):
     """
     givens a n*n matrix m, n=len(segments), in which m[i,j] means
     segments[i] is contained inside segments[j]
-    :param segments:
-    :return:
     """
     x1, y1 = segments[:, 0], segments[:, 1]
     x2, y2 = x1 + segments[:, 2], y1 + segments[:, 3]

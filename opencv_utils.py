@@ -37,9 +37,7 @@ class BrightnessProcessor(ImageProcessor):
 
 
 class ContrastProcessor(ImageProcessor):
-    """
-    changes image contrast. a scale of 1 will make no changes
-    """
+    """changes image contrast. a scale of 1 will make no changes"""
     PARAMETERS = ImageProcessor.PARAMETERS + {"scale": 1.0, "center": 0.5}
 
     def _image_processing(self, image):
@@ -58,9 +56,7 @@ class ContrastProcessor(ImageProcessor):
 
 
 class BlurProcessor(ImageProcessor):
-    """
-    changes image contrast. a scale of 1 will make no changes
-    """
+    """changes image contrast. a scale of 1 will make no changes"""
     PARAMETERS = ImageProcessor.PARAMETERS + {"blur_x": 0, "blur_y": 0}
 
     def _image_processing(self, image):
@@ -98,10 +94,7 @@ def background_color(image, numpy_result=True):
 def show_image_and_wait_for_key(image, name="Image"):
     """
     Shows an image, outputting name. keygroups is a dictionary of keycodes to functions;
-    they are executed when the corresponding keycode is pressed
-    :param image:
-    :param name:
-    :return:
+    they are executed when the corresponding keycode is pressed:return:
     """
 
     print "showing", name, "(waiting for input)"
@@ -110,28 +103,14 @@ def show_image_and_wait_for_key(image, name="Image"):
 
 
 def draw_segments(image, segments, color=(255, 0, 0), line_width=1):
-    """
-    draws segments on image
-    :param image:
-    :param segments:
-    :param color:
-    :param line_width:
-    :return:
-    """
+    """draws segments on image"""
     for segment in segments:
         x, y, w, h = segment
         cv2.rectangle(image, (x, y), (x + w, y + h), color, line_width)
 
 
 def draw_lines(image, ys, color=(255, 0, 0), line_width=1):
-    """
-    draws horizontal lines
-    :param image:
-    :param ys:
-    :param color:
-    :param line_width:
-    :return:
-    """
+    """draws horizontal lines"""
     for y in ys:
         cv2.line(image, (0, y), (image.shape[1], y), color, line_width)
 

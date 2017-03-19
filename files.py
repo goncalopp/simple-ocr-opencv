@@ -9,11 +9,7 @@ GROUND_EXTENSIONS_DEFAULT = GROUND_EXTENSIONS[0]
 
 
 def split_extension(path):
-    """
-    splits filename (with extension) into filename and extension
-    :param path:
-    :return:
-    """
+    """splits filename (with extension) into filename and extension"""
     try:
         i = path.index(".", -5)
         return path[:i], path[i:]
@@ -22,12 +18,7 @@ def split_extension(path):
 
 
 def try_extensions(path, extensions):
-    """
-    checks if various extensions of a path exist
-    :param path:
-    :param extensions:
-    :return:
-    """
+    """checks if various extensions of a path exist"""
     if os.path.exists(path):
         return path
     for ext in extensions:
@@ -73,20 +64,11 @@ class ImageFile(object):
             self.ground = None
 
     def is_grounded(self):
-        """
-        checks if this file is grounded
-        :return:
-        """
+        """checks if this file is grounded"""
         return not (self.ground is None)
 
     def set_ground(self, segments, classes, write_file=False):
-        """
-        creates the ground, saves it to a file
-        :param segments:
-        :param classes:
-        :param write_file:
-        :return:
-        """
+        """creates the ground, saves it to a file"""
         if self.is_grounded():
             print "Warning: grounding already grounded file"
         self.ground = GroundFile(self.ground_path)
@@ -96,11 +78,7 @@ class ImageFile(object):
             self.ground.write()
 
     def remove_ground(self, remove_file=False):
-        """
-        removes ground, optionally deleting it's file'''
-        :param remove_file:
-        :return:
-        """
+        """removes ground, optionally deleting it's file"""
         if not self.is_grounded():
             print "Warning: ungrounding ungrounded file"
         self.ground = None

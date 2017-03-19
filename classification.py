@@ -10,11 +10,7 @@ BLANK_CLASS = chr(35)  # marks unclassified elements
 
 
 def classes_to_numpy(classes):
-    """
-    given a list of unicode chars, transforms it into a numpy array
-    :param classes:
-    :return:
-    """
+    """given a list of unicode chars, transforms it into a numpy array"""
     import array
     # utf-32 starts with constant ''\xff\xfe\x00\x00', then has little endian 32 bits chars
     # this assumes little endian architecture!
@@ -28,11 +24,7 @@ def classes_to_numpy(classes):
 
 
 def classes_from_numpy(classes):
-    """
-    reverses classes_to_numpy
-    :param classes:
-    :return:
-    """
+    """reverses classes_to_numpy"""
     classes = classes if CLASSES_DIRECTION == 0 else classes.tranpose()
     classes = map(unichr, classes)
     return classes
@@ -40,12 +32,7 @@ def classes_from_numpy(classes):
 
 class Classifier(object):
     def train(self, features, classes):
-        """
-        trains the classifier with the classified feature vectors
-        :param features:
-        :param classes:
-        :return:
-        """
+        """trains the classifier with the classified feature vectors"""
         raise NotImplementedError()
 
     @staticmethod
@@ -54,11 +41,7 @@ class Classifier(object):
         return features[classified], classes[classified]
 
     def classify(self, features):
-        """
-        returns the classes of the feature vectors
-        :param features:
-        :return:
-        """
+        """returns the classes of the feature vectors"""
         raise NotImplementedError
 
 

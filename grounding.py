@@ -12,29 +12,16 @@ NOT_A_SEGMENT = unichr(10)
 
 class Grounder(object):
     def ground(self, imagefile, segments, external_data):
-        """
-        given an ImageFile, grounds it, through arbitrary data (better defined in subclasses)
-        :param imagefile:
-        :param segments:
-        :param external_data:
-        :return:
-        """
+        """given an ImageFile, grounds it, through arbitrary data (better defined in subclasses)"""
         raise NotImplementedError()
 
 
 class TextGrounder(Grounder):
-    """
-    labels from a string
-    """
+    """labels from a string"""
 
     def ground(self, imagefile, segments, text):
         """
-        tries to grounds from a simple string
-        :param imagefile:
-        :param segments:
-        :param text:
-        :return:
-        """
+        tries to grounds from a simple string            """
         text = unicode(text)
         text = filter(lambda c: c in string.ascii_letters + string.digits, list(text))
         if len(segments) != len(text):
@@ -44,18 +31,10 @@ class TextGrounder(Grounder):
 
 
 class UserGrounder(Grounder):
-    """
-    labels by interactively asking the user
-    """
+    """labels by interactively asking the user"""
 
     def ground(self, imagefile, segments, _=None):
-        """
-        asks the user to label each segment as either a character or "<" for unknown
-        :param imagefile:
-        :param segments:
-        :param _:
-        :return:
-        """
+        """asks the user to label each segment as either a character or "<" for unknown"""
         print "For each shown segment, please write the character that it represents, or spacebar if it's not a " \
               "character. To undo a classification, press backspace. Press ESC when completed, arrow keys to move"
         i = 0

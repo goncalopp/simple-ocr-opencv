@@ -30,23 +30,14 @@ class OCR(object):
         self.classifier = classifier
 
     def train(self, image_file):
-        """
-        feeds the training data to the OCR
-        :param image_file:
-        :return:
-        """
+        """feeds the training data to the OCR"""
         if not image_file.is_grounded():
             raise Exception("The provided file is not grounded")
         features = self.feature_extractor.extract(image_file.image, image_file.ground.segments)
         self.classifier.train(features, image_file.ground.classes)
 
     def ocr(self, image_file, show_steps=False):
-        """
-        performs ocr used trained classifier
-        :param image_file:
-        :param show_steps:
-        :return:
-        """
+        """performs ocr used trained classifier"""
         segments = self.segmenter.process(image_file.image)
         if show_steps:
             self.segmenter.display()

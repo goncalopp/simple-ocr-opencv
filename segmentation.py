@@ -11,34 +11,21 @@ SEGMENTS_DIRECTION = 0  # vertical axis in numpy
 
 
 def segments_from_numpy(segments):
-    """
-    reverses segments_to_numpy
-    :param segments:
-    :return:
-    """
+    """reverses segments_to_numpy"""
     segments = segments if SEGMENTS_DIRECTION == 0 else segments.tranpose()
     segments = [map(int, s) for s in segments]
     return segments
 
 
 def segments_to_numpy(segments):
-    """
-    given a list of 4-element tuples, transforms it into a numpy array
-    :param segments:
-    :return:
-    """
+    """given a list of 4-element tuples, transforms it into a numpy array"""
     segments = numpy.array(segments, dtype=SEGMENT_DATATYPE, ndmin=2)  # each segment in a row
     segments = segments if SEGMENTS_DIRECTION == 0 else numpy.transpose(segments)
     return segments
 
 
 def region_from_segment(image, segment):
-    """
-    given a segment (rectangle) and an image, returns it's corresponding subimage
-    :param image:
-    :param segment:
-    :return:
-    """
+    """given a segment (rectangle) and an image, returns it's corresponding subimage"""
     x, y, w, h = segment
     return image[y:y + h, x:x + w]
 
@@ -49,11 +36,7 @@ class RawSegmenter(DisplayingProcessor):
     """
 
     def _segment(self, image):
-        """
-        segments an opencv image for OCR. returns list of 4-element tuples (x,y,width, height).
-        :param image:
-        :return:
-        """
+        """segments an opencv image for OCR. returns list of 4-element tuples (x,y,width, height)."""
         # return segments
         raise NotImplementedError()
 

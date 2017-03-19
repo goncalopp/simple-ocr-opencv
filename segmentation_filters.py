@@ -16,11 +16,7 @@ class Filter(DisplayingProcessor):
     PARAMETERS = DisplayingProcessor.PARAMETERS
 
     def display(self, display_before=False):
-        """
-        shows the effect of this filter
-        :param display_before:
-        :return:
-        """
+        """shows the effect of this filter"""
         try:
             copy = self.image.copy()
         except AttributeError:
@@ -44,9 +40,7 @@ class Filter(DisplayingProcessor):
 
 
 class LargeFilter(Filter):
-    """
-    desirable segments are larger than some width or height
-    """
+    """desirable segments are larger than some width or height"""
     PARAMETERS = Filter.PARAMETERS + {"min_width": 4, "min_height": 8}
 
     def _good_segments(self, segments):
@@ -56,9 +50,7 @@ class LargeFilter(Filter):
 
 
 class SmallFilter(Filter):
-    """
-    desirable segments are smaller than some width or height
-    """
+    """desirable segments are smaller than some width or height"""
     PARAMETERS = Filter.PARAMETERS + {"max_width": 30, "max_height": 50}
 
     def _good_segments(self, segments):
@@ -68,9 +60,7 @@ class SmallFilter(Filter):
 
 
 class LargeAreaFilter(Filter):
-    """
-    desirable segments' area is larger than some
-    """
+    """desirable segments' area is larger than some"""
     PARAMETERS = Filter.PARAMETERS + {"min_area": 45}
 
     def _good_segments(self, segments):
@@ -78,9 +68,7 @@ class LargeAreaFilter(Filter):
 
 
 class ContainedFilter(Filter):
-    """
-    desirable segments are not contained by any other
-    """
+    """desirable segments are not contained by any other"""
 
     def _good_segments(self, segments):
         m = contained_segments_matrix(segments)

@@ -14,13 +14,7 @@ def _broadcast(src_processor, src_atr_name, dest_processors, dest_atr_name, tran
     """
     To be used exclusively by create_broadcast.
     A broadcast function gets an attribute on the src_processor and
-    sets it (possibly under a different name) on dest_processors
-    :param src_processor:
-    :param src_atr_name:
-    :param dest_processors:
-    :param dest_atr_name:
-    :param transform_function:
-    :return:
+    sets it (possibly under a different name) on dest_processors:param dest_processors::return:
     """
     value = getattr(src_processor, src_atr_name)
     value = transform_function(value)
@@ -33,11 +27,6 @@ def create_broadcast(src_atr_name, dest_processors, dest_atr_name=None, transfor
     This method creates a function, intended to be called as a
     Processor posthook, that copies some of the processor's attributes
     to other processors
-    :param src_atr_name:
-    :param dest_processors:
-    :param dest_atr_name:
-    :param transform_function:
-    :return:
     """
     from functools import partial
     if dest_atr_name == None:
@@ -67,10 +56,7 @@ class Processor(object):
     PARAMETERS = Parameters()
 
     def __init__(self, **args):
-        """
-        sets default parameters
-        :param args:
-        """
+        """sets default parameters"""
         for k, v in self.PARAMETERS.items():
             setattr(self, k, v)
         self.set_parameters(**args)
@@ -78,21 +64,14 @@ class Processor(object):
         self._poshooks = []  # functions (on output) to be executed after processing
 
     def get_parameters(self):
-        """
-        returns a dictionary with the processor's stored parameters
-        :return:
-        """
+        """returns a dictionary with the processor's stored parameters"""
         parameter_names = self.PARAMETERS.keys()
         # TODO: Unresolved reference for processor
         parameter_values = [getattr(processor, n) for n in parameter_names]
         return dict(zip(parameter_names, parameter_values))
 
     def set_parameters(self, **args):
-        """
-        sets the processor stored parameters
-        :param args:
-        :return:
-        """
+        """sets the processor stored parameters"""
         for k, v in self.PARAMETERS.items():
             new_value = args.get(k)
             if new_value != None:
@@ -130,17 +109,13 @@ class DisplayingProcessor(Processor):
         """
         Show the last effect this processor had - on a GUI, for
         example. If show_before is True, show the "state before
-        processor" before
-        :param display_before:
-        :return:
+        processor"
         """
         raise NotImplementedError
 
 
 class ProcessorStack(Processor):
-    """
-    a stack of processors. Each processor's output is fed to the next
-    """
+    """a stack of processors. Each processor's output is fed to the next"""
 
     def __init__(self, processor_instances=[], **args):
         self.set_processor_stack(processor_instances)
@@ -151,10 +126,7 @@ class ProcessorStack(Processor):
         self.processors = processor_instances
 
     def get_parameters(self):
-        """
-        gets from all wrapped processors
-        :return:
-        """
+        """gets from all wrapped processors"""
         d = {}
         for p in self.processors:
             parameter_names = p.PARAMETERS.keys()
@@ -163,11 +135,7 @@ class ProcessorStack(Processor):
         return d
 
     def set_parameters(self, **args):
-        """
-        sets to all wrapped processors
-        :param args:
-        :return:
-        """
+        """sets to all wrapped processors"""
         not_used = set()
         not_given = set()
         for p in self.processors:

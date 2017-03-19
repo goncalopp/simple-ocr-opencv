@@ -39,7 +39,6 @@ class UserGrounder(Grounder):
             classes = classes_from_numpy(imagefile.ground.classes)
             segments = imagefile.ground.segments
         else:
-            classes = [BLANK_CLASS] * len(segments)
             # char(10) is newline. it represents a non-assigned label, and will b filtered
             classes = [BLANK_CLASS] * len(segments)
         done = False

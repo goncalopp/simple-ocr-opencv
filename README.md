@@ -31,7 +31,7 @@ in a segment).
 [Supervised learning][] is a way of "teaching" a machine. Basically, an 
 algorithm is *trained* through *examples* (i.e.: this particular 
 segment contains the character `f`). After training, the machine 
-should be able to apply its aquired knowledge to new data.
+should be able to apply its acquired knowledge to new data.
 
 The [k-NN algorithm], used in this project, is one of the simplest  
 classification algorithm.
@@ -65,5 +65,5 @@ How to use
 Please check `example.py` for basic usage with the existing pre-grounded images.
 
 You can use your own images, by placing them on the `data` directory. 
-Grounding images interactively can be accomplished by using `grouding.UserGrounder`.
+Grounding images interactively can be accomplished by using `grounding.UserGrounder`.
 For more details check `example_grounding.py`

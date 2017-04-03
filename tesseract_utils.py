@@ -1,9 +1,5 @@
 import numpy
 
-# Written by Goncalopp and RedFantom
-# Simple Python OCR, Copyright (C) 2016 by Goncalopp and RedFantom
-# All additions are under the copyright of their respective authors
-# For license see LICENSE
 from classification import classes_from_numpy, classes_to_numpy
 from segmentation import segments_from_numpy, segments_to_numpy
 

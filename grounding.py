@@ -1,8 +1,5 @@
-# Written by Goncalopp and RedFantom
-# Simple Python OCR, Copyright (C) 2016 by Goncalopp and RedFantom
-# All additions are under the copyright of their respective authors
-# For license see LICENSE
 """various classes for establishing ground truth"""
+
 from classification import classes_to_numpy, classes_from_numpy, BLANK_CLASS
 from opencv_utils import show_image_and_wait_for_key, draw_segments, draw_classes
 import numpy

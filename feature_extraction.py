@@ -1,7 +1,3 @@
-# Written by Goncalopp and RedFantom
-# Simple Python OCR, Copyright (C) 2016 by Goncalopp and RedFantom
-# All additions are under the copyright of their respective authors
-# For license see LICENSE
 import numpy
 import cv2
 from segmentation import region_from_segment

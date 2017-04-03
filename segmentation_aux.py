@@ -1,7 +1,3 @@
-# Written by Goncalopp and RedFantom
-# Simple Python OCR, Copyright (C) 2016 by Goncalopp and RedFantom
-# All additions are under the copyright of their respective authors
-# For license see LICENSE
 from processor import Processor, DisplayingProcessor
 from opencv_utils import draw_lines, show_image_and_wait_for_key
 import numpy

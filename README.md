@@ -1,22 +1,7 @@
-# Simple Python OCR
-This project is available under the [GNU AGPLv3 License](https://www.gnu.org/licenses/agpl-3.0.txt), a copy
-should be available in LICENSE. If not, check out the link to learn more.
+A simple pythonic OCR engine using opencv and numpy.
 
-    Copyright (C) 2016-2017 by Goncalopp and RedFantom
-    All authors are the copyright owners of their respective additions
-    
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU AGPLv3 License, as found in LICENSE.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.    
-
-Originally inspired by [this question](http://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python) on StackOverflow.
+Originally inspired by
+http://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python
 
 ### Essential Concepts
 

@@ -1,18 +1,9 @@
-# Simple Python OCR  
-[![Build Status](https://travis-ci.org/RedFantom/simple-ocr-opencv.svg?branch=master)](https://travis-ci.org/RedFantom/simple-ocr-opencv)
-[![Build status](https://ci.appveyor.com/api/projects/status/cu0fn9l5asbg4k02?svg=true)](https://ci.appveyor.com/project/RedFantom/simple-ocr-opencv)
-[![codecov](https://codecov.io/gh/RedFantom/simple-ocr-opencv/branch/master/graph/badge.svg)](https://codecov.io/gh/RedFantom/simple-ocr-opencv)
+# Simple Python OCR
+A simple pythonic OCR engine using opencv and numpy.
 
-This repository is a fork of [simple-ocr-opencv](https://github.com/goncalopp/simple-ocr-opencv) by Goncalopp, with the
-goal of turning this engine-project with examples into a working library for everyone
-to use. This project is available under the [GNU AGPLv3 License](https://www.gnu.org/licenses/agpl-3.0.txt), a copy 
-should be available in LICENSE. If not, check out the link to learn more.
+Originally inspired by [this stackoverflow question](http://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python)
 
-Originally inspired by
-http://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python
-
-Essential Concepts
-==================
+### Essential Concepts
 
 #### Segmentation
 
@@ -47,8 +38,7 @@ See [ground truth][].
 [k-NN algorithm]: https://en.wikipedia.org/wiki/K-nearest_neighbors_classification
 [ground truth]: https://en.wikipedia.org/wiki/Ground_truth
 
-How to understand this project
-==============================
+#### How to understand this project
 
 Unfortunately, documentation is a bit sparse at the moment (I 
 gladly accept contributions).
@@ -59,11 +49,30 @@ If you need any help, don't hesitate to contact me. You can find my
 email on my github profile.
 
 
-How to use
-==========
+#### How to use
 
 Please check `example.py` for basic usage with the existing pre-grounded images.
 
 You can use your own images, by placing them on the `data` directory. 
 Grounding images interactively can be accomplished by using `grounding.UserGrounder`.
 For more details check `example_grounding.py`
+
+#### Copyright and notices
+
+This project is available under the [GNU AGPLv3 License](https://www.gnu.org/licenses/agpl-3.0.txt), a copy
+should be available in LICENSE. If not, check out the link to learn more.
+ 
+    Copyright (C) 2012-2017 by the simple-ocr-opencv authors
+    All authors are the copyright owners of their respective additions
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU AGPLv3 License, as found in LICENSE.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.    
+  

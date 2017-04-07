@@ -66,6 +66,7 @@ class UserGrounder(Grounder):
                 i = 0
             if i < 0:
                 i = len(classes) - 1
+                
         classes = numpy.array(classes)
         is_segment = classes != NOT_A_SEGMENT
         classes = classes[is_segment]

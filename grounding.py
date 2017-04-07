@@ -22,7 +22,7 @@ class TextGrounder(Grounder):
         text = unicode(text)
         text = filter(lambda c: c in string.ascii_letters + string.digits, list(text))
         if len(segments) != len(text):
-            raise Exception("segments/text length mismatch")
+            raise ValueError("segments/text length mismatch")
         classes = classes_to_numpy(text)
         imagefile.set_ground(segments, classes)
 

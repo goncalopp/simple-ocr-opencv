@@ -63,7 +63,8 @@ class TestGrounding(unittest.TestCase):
         image = ImageFile('digits1')
         segments = segmenter.process(image.image)
         with mock.patch('cv2.waitKey', mock_input):
-            grounder.ground(image, segments)
+            with mock.patch('cv2.imshow'):
+                grounder.ground(image, segments)
         extractor = SimpleFeatureExtractor()
         classifier = KNNClassifier()
         ocr = OCR(segmenter, extractor, classifier)

@@ -1,4 +1,6 @@
 # Simple Python OCR
+[![Build Status](https://travis-ci.org/goncalopp/simple-ocr-opencv.svg?branch=master)](https://travis-ci.org/goncalopp/simple-ocr-opencv)
+
 A simple pythonic OCR engine using opencv and numpy.
 
 Originally inspired by [this stackoverflow question](http://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python)

@@ -47,7 +47,10 @@ class Classifier(object):
 
 class KNNClassifier(Classifier):
     def __init__(self, k=1, debug=False):
-        self.knn = cv2.KNearest()
+        if cv2.__version__.split(".")[0] == "3":
+            self.knn = cv2.ml.KNearest_create()
+        else:
+            self.knn = cv2.KNearest()
         self.k = k
         self.debug = debug
 
@@ -57,10 +60,16 @@ class KNNClassifier(Classifier):
         if CLASS_DATATYPE != numpy.float32:
             classes = numpy.asarray(classes, dtype=numpy.float32)
         features, classes = Classifier._filter_unclassified(features, classes)
-        self.knn.train(features, classes)
+        if cv2.__version__.split(".")[0] == "3":
+            self.knn.train(features, cv2.ml.ROW_SAMPLE, classes)
+        else:
+            self.knn.train(features, classes)
 
     def classify(self, features):
         if FEATURE_DATATYPE != numpy.float32:
             features = numpy.asarray(features, dtype=numpy.float32)
-        retval, result_classes, neigh_resp, dists = self.knn.find_nearest(features, k=1)
+        if cv2.__version__.split(".")[0] == "3":
+            retval, result_classes, neigh_resp, dists = self.knn.findNearest(features, k=1)
+        else:
+            retval, result_classes, neigh_resp, dists = self.knn.find_nearest(features, k=1)
         return result_classes

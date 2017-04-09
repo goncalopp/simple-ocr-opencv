@@ -1,0 +1,13 @@
+language: python
+required: sudo
+python:
+    "2.7"
+virtualenv:
+    system_site_packages: true
+install:
+  - sudo apt-get install python-opencv
+script: nosetests
+after_success:
+  - coverage run nosetests
+  - coveralls
+

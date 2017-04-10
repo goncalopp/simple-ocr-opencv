@@ -121,6 +121,20 @@ class SimpleOCR(object):
         classes = self.classifier.classify(features)
         return classes, segments
 
+    def ocr_chars(self, image_file, show_steps=False):
+        """
+        performs ocr used trained classifier, but returns only characters
+        :param image_file: the image file to perform ocr on
+        :param show_steps: shows individual steps if True
+        :return: classes, segments
+        """
+        segments = self.segmenter.process(image_file.image)
+        if show_steps:
+            self.segmenter.display()
+        features = self.extractor.extract(image_file.image, segments)
+        classes = self.classifier.classify(features)
+        return reconstruct_chars(classes)
+
     def ground_file(self, filename, text=None):
         """
         Ground an image file for use in the OCR object.

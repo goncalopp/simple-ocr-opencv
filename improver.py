@@ -37,8 +37,7 @@ class ImageImprover(object):
 class ImageFileImprover(object):
     def __init__(self, imagefile):
         self.imagefile = imagefile
-        self.image = cv2.cvtColor(self.imagefile.image, cv2.COLOR_BGR2RGB)
-        self.image = Image.fromarray(self.image)
+        self.image = imagefile_to_pillow(imagefile)
 
     def enhance(self, color=0.1, brightness=0.1, contrast=10.0,
                 sharpness=10.0, invert=False):
@@ -48,8 +47,7 @@ class ImageFileImprover(object):
         self.image = ImageEnhance.Sharpness(self.image).enhance(sharpness)
         if invert:
             self.image = ImageOps.invert(self.image)
-        self.imagefile.image = numpy.array(self.image)
-        self.imagefile.image = self.imagefile.image[:, :, ::-1].copy()
+        self.imagefile.image = pillow_to_numpy(self.image)
 
     def crop(self, box):
         if not isinstance(box, tuple):
@@ -57,8 +55,7 @@ class ImageFileImprover(object):
         if not len(box) == 4:
             raise ValueError("The provided box tuple is not the right size")
         self.image = self.image.crop(box)
-        self.imagefile.image = numpy.array(self.image)
-        self.imagefile.image = self.imagefile.image[:, :, ::-1].copy()
+        self.imagefile.image = pillow_to_numpy(self.image)
 
 
 def imagefile_to_pillow(imagefile):

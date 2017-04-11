@@ -128,11 +128,7 @@ class SimpleOCR(object):
         :param show_steps: shows individual steps if True
         :return: classes, segments
         """
-        segments = self.segmenter.process(image_file.image)
-        if show_steps:
-            self.segmenter.display()
-        features = self.extractor.extract(image_file.image, segments)
-        classes = self.classifier.classify(features)
+        classes, _ = self.ocr(image_file, show_steps=show_steps)
         return reconstruct_chars(classes)
 
     def ground_file(self, filename, text=None):

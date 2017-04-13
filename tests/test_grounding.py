@@ -1,11 +1,11 @@
 import unittest
+import mock
 from files import ImageFile
 from grounding import TextGrounder, UserGrounder
 from segmentation import ContourSegmenter
 from feature_extraction import SimpleFeatureExtractor
 from classification import KNNClassifier
 from ocr import OCR, reconstruct_chars
-import mock
 
 
 class TestGrounding(unittest.TestCase):
@@ -58,6 +58,7 @@ class TestGrounding(unittest.TestCase):
 
         def mock_input(*args):
             return next(mock_generator)
+
         grounder = UserGrounder()
         segmenter = ContourSegmenter()
         image = ImageFile('digits1')
@@ -70,8 +71,12 @@ class TestGrounding(unittest.TestCase):
         ocr = OCR(segmenter, extractor, classifier)
         ocr.train(ImageFile('digits1'))
         digits = ImageFile('digits2')
-        classes, segments = ocr.ocr(digits, show_steps=False)
+        chars, classes, segments = ocr.ocr(digits, show_steps=False)
         self.assertEqual(reconstruct_chars(classes), "31415926535897932384626433832795028841971693993751058209749445923"
                                                      "07816406286208998628034825342117067982148086513282306647093844609"
                                                      "55058223172535940812848111745028410270193852110555964462294895493"
                                                      "038196442881097566593344612847")
+        self.assertEqual(chars, "31415926535897932384626433832795028841971693993751058209749445923"
+                                "07816406286208998628034825342117067982148086513282306647093844609"
+                                "55058223172535940812848111745028410270193852110555964462294895493"
+                                "038196442881097566593344612847")

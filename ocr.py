@@ -1,5 +1,5 @@
-from opencv_utils import show_image_and_wait_for_key, draw_segments
 import numpy
+from opencv_utils import show_image_and_wait_for_key, draw_segments
 import segmentation as segmenters
 import classification as classifiers
 import feature_extraction as extractors
@@ -14,7 +14,6 @@ SEGMENTERS = {
 EXTRACTORS = {"simple": extractors.SimpleFeatureExtractor}
 CLASSIFIERS = {"knn": classifiers.KNNClassifier}
 GROUNDERS = {"user": grounders.UserGrounder, "text": grounders.TextGrounder}
-
 
 
 def show_differences(image, segments, ground_classes, result_classes):
@@ -37,14 +36,16 @@ def accuracy(expected, result):
     correct = expected == result
     return float(numpy.count_nonzero(correct)) / correct.shape[0]
 
+
 def get_instance_from(x, class_dict, default_key):
-    '''Gets a instance of a class, given a class dict and x.
+    """Gets a instance of a class, given a class dict and x.
     X can be either a instance (already), the key to the dict, or None.
-    If x is None, class_dict[default_key] will be instanciated'''
+    If x is None, class_dict[default_key] will be instanciated"""
     k = x or default_key
     cls = class_dict.get(k)
     instance = cls() if cls else x
     return instance
+
 
 class OCR(object):
     def __init__(self, segmenter=None, extractor=None, classifier=None, grounder=None):
@@ -77,7 +78,7 @@ class OCR(object):
     def ground(self, image_file, text=None):
         """
         Ground an image file for use in the OCR object.
-        :param filename: The name of the image file (either in cwd/data or full path)
+        :param image_file: The name of the image file or an ImageFile object
         :param text: The text, if self.grounder is a TextGrounder (defaults to None)
         :return:
         """
@@ -90,4 +91,4 @@ class OCR(object):
             self.grounder.ground(image_file, segments, text)
         else:
             self.grounder.ground(image_file, segments)
-        image_file.ground.write() # save to file
+        image_file.ground.write()  # save to file

@@ -1,4 +1,4 @@
-from opencv_utils import show_image_and_wait_for_key, draw_segments, BlurProcessor
+from opencv_utils import show_image_and_wait_for_key, draw_segments, BlurProcessor, get_opencv_version
 from processor import DisplayingProcessor, DisplayingProcessorStack, create_broadcast
 from segmentation_aux import SegmentOrderer
 from segmentation_filters import create_default_filter_stack, Filter, NearLineFilter
@@ -56,7 +56,10 @@ class RawContourSegmenter(RawSegmenter):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         image = cv2.adaptiveThreshold(image, maxValue=255, adaptiveMethod=cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
                                       thresholdType=cv2.THRESH_BINARY, blockSize=self.block_size, C=self.c)
-        contours, hierarchy = cv2.findContours(image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        if get_opencv_version() == 3:
+            _, contours, hierarchy = cv2.findContours(image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        else:
+            contours, hierarchy = cv2.findContours(image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
         segments = segments_to_numpy([cv2.boundingRect(c) for c in contours])
         self.contours, self.hierarchy = contours, hierarchy  # store, may be needed for debugging
         return segments

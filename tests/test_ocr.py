@@ -1,4 +1,5 @@
 import unittest
+
 from segmentation import ContourSegmenter
 from feature_extraction import SimpleFeatureExtractor
 from files import ImageFile
@@ -8,19 +9,18 @@ from ocr import OCR, reconstruct_chars
 
 class TestOCR(unittest.TestCase):
     def test_ocr_digits(self):
+        # get data from images
+        img1 = ImageFile('digits1')
+        img2 = ImageFile('digits2')
+        ground_truth = img2.ground.classes
+        img2.remove_ground()
+        # create OCR
         segmenter = ContourSegmenter()
-        self.assertTrue(segmenter)
         extractor = SimpleFeatureExtractor()
-        self.assertTrue(extractor)
         classifier = KNNClassifier()
-        self.assertTrue(classifier)
         ocr = OCR(segmenter, extractor, classifier)
-        self.assertTrue(ocr)
-        ocr.train(ImageFile('digits1'))
-        digits = ImageFile('digits2')
-        self.assertTrue(digits)
-        classes, segments = ocr.ocr(digits, show_steps=False)
-        self.assertEqual(reconstruct_chars(classes), "31415926535897932384626433832795028841971693993751058209749445923"
-                                                     "07816406286208998628034825342117067982148086513282306647093844609"
-                                                     "55058223172535940812848111745028410270193852110555964462294895493"
-                                                     "038196442881097566593344612847")
+        # train and test
+        ocr.train(img1)
+        chars, classes, _ = ocr.ocr(img2, show_steps=False)
+        self.assertEqual(list(classes), list(ground_truth))
+        self.assertEqual(chars, reconstruct_chars(ground_truth))

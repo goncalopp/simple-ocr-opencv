@@ -120,3 +120,18 @@ def draw_classes(image, segments, classes):
     for s, c in zip(segments, classes):
         x, y, w, h = s
         cv2.putText(image, c, (x, y), 0, 0.5, (128, 128, 128))
+
+
+def get_opencv_version():
+    """
+    Return the OpenCV version by checking cv2.__version__
+    :return: int, 2 or 3
+    """
+    if cv2.__version__.startswith("3"):
+        return 3
+    elif cv2.__version__.startswith("2"):
+        return 2
+    else:
+        # This is for the Ubuntu repositories
+        # Not the most efficient logical statement, but the most logical to edit in the future
+        return 2

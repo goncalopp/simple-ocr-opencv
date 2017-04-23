@@ -1,10 +1,9 @@
 import unittest
-
-from segmentation import ContourSegmenter
-from feature_extraction import SimpleFeatureExtractor
-from files import ImageFile
-from classification import KNNClassifier
-from ocr import OCR, reconstruct_chars
+from simpleocr.segmentation import ContourSegmenter
+from simpleocr.feature_extraction import SimpleFeatureExtractor
+from simpleocr.files import ImageFile
+from simpleocr.classification import KNNClassifier
+from simpleocr.ocr import OCR, reconstruct_chars
 
 
 class TestOCR(unittest.TestCase):

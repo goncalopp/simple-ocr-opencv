@@ -6,7 +6,9 @@ virtualenv:
     system_site_packages: true
 install:
   - sudo apt-get install python-opencv
-script: nosetests
+script:
+  - python setup.py install
+  - nosetests
 after_success:
   - coverage run nosetests
   - coveralls

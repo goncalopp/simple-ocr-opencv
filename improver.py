@@ -11,73 +11,7 @@ characters to classify.
 """
 
 
-def enhance(imagefile, option, value):
-    """
-    Enhance function to prevent code repitition. Not for use from outside of this file.
-    :param imagefile: ImageFile object
-    :param option: class in ImageEnhance module
-    :param value: value to pass as argument to the class().enhance() function
-    :return: a modified ImageFile
-    """
-    image = imagefile_to_pillow(imagefile)
-    image = option(image).enhance(value)
-    imagefile.image = pillow_to_numpy(image)
-    return imagefile
-
-
-def enhance_color(imagefile, color):
-    """
-    Change the color of an ImageFile object
-    :param imagefile: ImageFile object
-    :param color: float
-    :return: modified ImageFile object
-    """
-    return enhance(imagefile, ImageEnhance.Color, color)
-
-
-def enhance_brightness(imagefile, brightness):
-    """
-    Change the brightness of an ImageFile object
-    :param imagefile: ImageFile object
-    :param brightness: float
-    :return: modified ImageFile object
-    """
-    return enhance(imagefile, ImageEnhance.Brightness, brightness)
-
-
-def enhance_contrast(imagefile, contrast):
-    """
-    Change the contrast of an ImageFile object
-    :param imagefile: ImageFile object
-    :param contrast: float
-    :return: modified ImageFile object
-    """
-    return enhance(imagefile, ImageEnhance.Contrast, contrast)
-
-
-def enhance_sharpness(imagefile, sharpness):
-    """
-    Change the sharpness of an ImageFile object
-    :param imagefile: ImageFile object
-    :param sharpness: float
-    :return: modified ImageFile object
-    """
-    return enhance(imagefile, ImageEnhance.Sharpness, sharpness)
-
-
-def invert_image(imagefile):
-    """
-    Invert the colors of an image.
-    :param imagefile: ImageFile object
-    :return: modified ImageFile object
-    """
-    image = imagefile_to_pillow(imagefile)
-    image = ImageOps.invert(image)
-    imagefile.image = pillow_to_numpy(image)
-    return imagefile
-
-
-def enhance_image(imagefile, color=0.1, brightness=0.1, contrast=10.0, sharpness=10.0, invert=False):
+def enhance_image(imagefile, color=None, brightness=None, contrast=None, sharpness=None, invert=False):
     """
     Enhance an image to make the chance of success of performing OCR on it larger.
     :param imagefile: ImageFile object
@@ -86,18 +20,21 @@ def enhance_image(imagefile, color=0.1, brightness=0.1, contrast=10.0, sharpness
     :param contrast: Contrast increase, float
     :param sharpness: Sharpness increase, float
     :param invert: Invert the colors of the image, bool
-    :return: modified ImageFile object
+    :return: modified ImageFile object, with no changes written to the actual file
     """
     image = imagefile_to_pillow(imagefile)
-    image = ImageEnhance.Color(image).enhance(color)
-    image = ImageEnhance.Brightness(image).enhance(brightness)
-    image = ImageEnhance.Contrast(image).enhance(contrast)
-    image = ImageEnhance.Sharpness(image).enhance(sharpness)
+    if color is not None:
+        image = ImageEnhance.Color(image).enhance(color)
+    if brightness is not None:
+        image = ImageEnhance.Brightness(image).enhance(brightness)
+    if contrast is not None:
+        image = ImageEnhance.Contrast(image).enhance(contrast)
+    if sharpness is not None:
+        image = ImageEnhance.Sharpness(image).enhance(sharpness)
     if invert:
-        image =ImageOps.invert(image)
+        image = ImageOps.invert(image)
     imagefile.image = pillow_to_numpy(image)
     return imagefile
-
 
 def crop_image(imagefile, box):
     """

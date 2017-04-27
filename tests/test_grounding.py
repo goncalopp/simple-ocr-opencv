@@ -4,7 +4,6 @@ from files import ImageFile
 from grounding import TextGrounder, TerminalGrounder, UserGrounder
 from segmentation import ContourSegmenter
 from ocr import reconstruct_chars
-import sys
 
 
 class TestGrounding(unittest.TestCase):

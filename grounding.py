@@ -6,7 +6,7 @@ import numpy
 import string
 from six import text_type, unichr, moves
 
-NOT_A_SEGMENT = unichr(10)
+NOT_A_SEGMENT = chr(10)
 
 
 class Grounder(object):
@@ -90,7 +90,7 @@ class UserGrounder(Grounder):
             elif key == 65363:  # ->
                 i += 1
             elif key in allowed_chars:
-                classes[i] = unichr(key)
+                classes[i] = chr(key)
                 i += 1
             if i >= len(classes):
                 i = 0

@@ -57,7 +57,7 @@ class Processor(object):
 
     def __init__(self, **args):
         """sets default parameters"""
-        for k, v in self.PARAMETERS.items():
+        for k, v in list(self.PARAMETERS.items()):
             setattr(self, k, v)
         self.set_parameters(**args)
         self._prehooks = []  # functions (on input) to be executed before processing
@@ -65,14 +65,14 @@ class Processor(object):
 
     def get_parameters(self):
         """returns a dictionary with the processor's stored parameters"""
-        parameter_names = self.PARAMETERS.keys()
+        parameter_names = list(self.PARAMETERS.keys())
         # TODO: Unresolved reference for processor
         parameter_values = [getattr(processor, n) for n in parameter_names]
-        return dict(zip(parameter_names, parameter_values))
+        return dict(list(zip(parameter_names, parameter_values)))
 
     def set_parameters(self, **args):
         """sets the processor stored parameters"""
-        for k, v in self.PARAMETERS.items():
+        for k, v in list(self.PARAMETERS.items()):
             new_value = args.get(k)
             if new_value != None:
                 if not _same_type(new_value, v):
@@ -131,7 +131,7 @@ class ProcessorStack(Processor):
         for p in self.processors:
             parameter_names = list(p.PARAMETERS.keys())
             parameter_values = [getattr(p, n) for n in parameter_names]
-            d.update(dict(zip(parameter_names, parameter_values)))
+            d.update(dict(list(zip(parameter_names, parameter_values))))
         return d
 
     def set_parameters(self, **args):

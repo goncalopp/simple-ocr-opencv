@@ -46,7 +46,7 @@ class OverflowPreventer(object):
 
         self.wrapper = CustomWrapper(matrix)
         import functools
-        for op in OverflowPreventer.inverse_operator.keys():
+        for op in list(OverflowPreventer.inverse_operator.keys()):
             setattr(CustomWrapper, op, functools.partial(self.wrapper._overflow_operator, forward_operator=op))
 
     def __enter__(self):

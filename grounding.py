@@ -32,7 +32,7 @@ class UserGrounder(Grounder):
 
     def ground(self, imagefile, segments, _=None):
         """asks the user to label each segment as either a character or "<" for unknown"""
-        print("For each shown segment, please write the character that it represents, or spacebar if it's not a " \
+        print("For each shown segment, please write the character that it represents, or spacebar if it's not a "
               "character. To undo a classification, press backspace. Press ESC when completed, arrow keys to move")
         i = 0
         if imagefile.is_grounded():

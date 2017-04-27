@@ -26,7 +26,7 @@ def show_differences(image, segments, ground_classes, result_classes):
 
 
 def reconstruct_chars(classes):
-    result_string = "".join(map(unichr, classes))
+    result_string = "".join(map(chr, classes))
     return result_string
 
 

@@ -97,7 +97,7 @@ def show_image_and_wait_for_key(image, name="Image"):
     they are executed when the corresponding keycode is pressed:return:
     """
 
-    print "showing", name, "(waiting for input)"
+    print("showing", name, "(waiting for input)")
     cv2.imshow('norm', image)
     return ask_for_key()
 

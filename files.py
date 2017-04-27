@@ -70,7 +70,7 @@ class ImageFile(object):
     def set_ground(self, segments, classes, write_file=False):
         """creates the ground, saves it to a file"""
         if self.is_grounded():
-            print "Warning: grounding already grounded file"
+            print("Warning: grounding already grounded file")
         self.ground = GroundFile(self.ground_path)
         self.ground.segments = segments
         self.ground.classes = classes
@@ -80,7 +80,7 @@ class ImageFile(object):
     def remove_ground(self, remove_file=False):
         """removes ground, optionally deleting it's file"""
         if not self.is_grounded():
-            print "Warning: ungrounding ungrounded file"
+            print("Warning: ungrounding ungrounded file")
         self.ground = None
         if remove_file:
             os.remove(self.ground_path)

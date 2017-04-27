@@ -1,5 +1,3 @@
-import numpy
-
 from classification import classes_from_numpy, classes_to_numpy
 from segmentation import segments_from_numpy, segments_to_numpy
 
@@ -13,7 +11,7 @@ def read_boxfile(path):
             assert len(s) == 6
             assert s[5] == '0\n'
             classes.append(s[0].decode('utf-8'))
-            segments.append(map(int, s[1:5]))
+            segments.append(list(map(int, s[1:5])))
     return classes_to_numpy(classes), segments_to_numpy(segments)
 
 

@@ -3,9 +3,7 @@ import mock
 from files import ImageFile
 from grounding import TextGrounder, UserGrounder
 from segmentation import ContourSegmenter
-from feature_extraction import SimpleFeatureExtractor
-from classification import KNNClassifier
-from ocr import OCR, reconstruct_chars
+from ocr import reconstruct_chars
 
 
 class TestGrounding(unittest.TestCase):
@@ -20,7 +18,7 @@ class TestGrounding(unittest.TestCase):
         characters = "0" * len(self.segments)
         grounder.ground(self.img, self.segments, characters)
         self.assertTrue(self.img.is_grounded())
-        self.assertEquals(reconstruct_chars(self.img.ground.classes), characters)
+        self.assertEqual(reconstruct_chars(self.img.ground.classes), characters)
 
     def test_textgrounder_wronglen(self):
         grounder = TextGrounder()
@@ -42,4 +40,4 @@ class TestGrounding(unittest.TestCase):
             with mock.patch('cv2.imshow'):
                 grounder.ground(self.img, self.segments)
         self.assertTrue(self.img.is_grounded())
-        self.assertEquals(reconstruct_chars(self.img.ground.classes), "0"*len(self.segments))
+        self.assertEqual(reconstruct_chars(self.img.ground.classes), "0"*len(self.segments))

@@ -2,6 +2,7 @@ from processor import Processor, DisplayingProcessor
 from opencv_utils import draw_lines, show_image_and_wait_for_key
 import numpy
 import cv2
+from functools import reduce
 
 
 class SegmentOrderer(Processor):
@@ -107,8 +108,8 @@ def contained_segments_matrix(segments):
     x2, y2 = x1 + segments[:, 2], y1 + segments[:, 3]
     n = len(segments)
 
-    x1so, x2so, y1so, y2so = map(numpy.argsort, (x1, x2, y1, y2))
-    x1soi, x2soi, y1soi, y2soi = map(numpy.argsort, (x1so, x2so, y1so, y2so))  # inverse transformations
+    x1so, x2so, y1so, y2so = list(map(numpy.argsort, (x1, x2, y1, y2)))
+    x1soi, x2soi, y1soi, y2soi = list(map(numpy.argsort, (x1so, x2so, y1so, y2so)))  # inverse transformations
     # let rows be x1 and collumns be x2. this array represents where x1<x2
     o1 = numpy.triu(numpy.ones((n, n)), k=1).astype(bool)
     # let rows be x1 and collumns be x2. this array represents where x1>x2

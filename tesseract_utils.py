@@ -10,7 +10,7 @@ def read_boxfile(path):
             s = line.split(" ")
             assert len(s) == 6
             assert s[5] == '0\n'
-            classes.append(s[0].decode('utf-8'))
+            classes.append(s[0])  # .decode('utf-8'))
             segments.append(list(map(int, s[1:5])))
     return classes_to_numpy(classes), segments_to_numpy(segments)
 

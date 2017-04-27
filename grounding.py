@@ -68,7 +68,6 @@ class UserGrounder(Grounder):
             classes = classes_from_numpy(imagefile.ground.classes)
             segments = imagefile.ground.segments
         else:
-            # char(10) is newline. it represents a non-assigned label, and will b filtered
             classes = [BLANK_CLASS] * len(segments)
         done = False
         allowed_chars = map(ord, string.digits + string.letters + string.punctuation)

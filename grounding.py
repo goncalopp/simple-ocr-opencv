@@ -41,7 +41,7 @@ class UserGrounder(Grounder):
         else:
             classes = [BLANK_CLASS] * len(segments)
         done = False
-        allowed_chars = list(map(ord, string.digits + string.letters + string.punctuation))
+        allowed_chars = list(map(ord, string.digits + string.ascii_letters + string.punctuation))
         while not done:
             image = imagefile.image.copy()
             draw_segments(image, [segments[i]])

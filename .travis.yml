@@ -1,7 +1,10 @@
 language: python
 required: sudo
 python:
-    "2.7"
+    - "2.7"
+    - "3.4"
+    - "3.5"
+    - "3.6"
 virtualenv:
     system_site_packages: true
 install:

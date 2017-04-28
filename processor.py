@@ -14,7 +14,7 @@ def _broadcast(src_processor, src_atr_name, dest_processors, dest_atr_name, tran
     """
     To be used exclusively by create_broadcast.
     A broadcast function gets an attribute on the src_processor and
-    sets it (possibly under a different name) on dest_processors:param dest_processors::return:
+    sets it (possibly under a different name) on dest_processors
     """
     value = getattr(src_processor, src_atr_name)
     value = transform_function(value)

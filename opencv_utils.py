@@ -94,7 +94,7 @@ def background_color(image, numpy_result=True):
 def show_image_and_wait_for_key(image, name="Image"):
     """
     Shows an image, outputting name. keygroups is a dictionary of keycodes to functions;
-    they are executed when the corresponding keycode is pressed:return:
+    they are executed when the corresponding keycode is pressed
     """
 
     print "showing", name, "(waiting for input)"

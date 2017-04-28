@@ -11,7 +11,6 @@ FEATURES_DIRECTION = 0  # vertical - ROWS of feature vectors
 
 class FeatureExtractor(object):
     """given a list of segments, returns a list of feature vectors"""
-
     def extract(self, image, segments):
         raise NotImplementedError()
 

@@ -30,7 +30,7 @@ class TestGrounding(unittest.TestCase):
     def test_usergrounder(self):
         ESC_KEY = 27
         ZERO_KEY = 48
-        keys = [ZERO_KEY]*len(self.segments) + [ESC_KEY]
+        keys = [ZERO_KEY] * len(self.segments) + [ESC_KEY]
         mock_generator = iter(keys)
 
         def mock_input(*args):
@@ -41,17 +41,17 @@ class TestGrounding(unittest.TestCase):
             with mock.patch('cv2.imshow'):
                 grounder.ground(self.img, self.segments)
         self.assertTrue(self.img.is_grounded())
-        self.assertEquals(reconstruct_chars(self.img.ground.classes), "0"*len(self.segments))
+        self.assertEquals(reconstruct_chars(self.img.ground.classes), "0" * len(self.segments))
 
     def test_terminal_grounder(self):
         terminal = TerminalGrounder()
-        segmenter = ContourSegmenter()
-        image = ImageFile('digits1')
-        segments = segmenter.process(image.image)
-        characters = "0" * len(segments)
-        mock_input_gen = (char for char in characters)
+        characters = "0" * len(self.segments)
+        mock_input_gen = iter(characters)
+
         def mock_input(prompt):
             return next(mock_input_gen)
-        with mock.patch('__builtin__.raw_input', mock_input):
-            terminal.ground(image, segments)
 
+        with mock.patch('__builtin__.raw_input', mock_input):
+            terminal.ground(self.img, self.segments)
+        self.assertTrue(self.img.is_grounded())
+        self.assertEquals(reconstruct_chars(self.img.ground.classes), "0" * len(self.segments))

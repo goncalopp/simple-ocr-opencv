@@ -113,7 +113,6 @@ def contained_segments_matrix(segments):
     o1 = numpy.triu(numpy.ones((n, n)), k=1).astype(bool)
     # let rows be x1 and collumns be x2. this array represents where x1>x2
     o2 = numpy.tril(numpy.ones((n, n)), k=0).astype(bool)
-
     a_inside_b_x = o2[x1soi][:, x1soi] * o1[x2soi][:, x2soi]  # (x1[a]>x1[b] and x2[a]<x2[b])
     a_inside_b_y = o2[y1soi][:, y1soi] * o1[y2soi][:, y2soi]  # (y1[a]>y1[b] and y2[a]<y2[b])
     a_inside_b = a_inside_b_x * a_inside_b_y

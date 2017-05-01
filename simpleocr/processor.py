@@ -65,9 +65,9 @@ class Processor(object):
 
     def get_parameters(self):
         """returns a dictionary with the processor's stored parameters"""
-        parameter_names = self.PARAMETERS.keys()
         # TODO: Unresolved reference for processor
         parameter_values = [getattr(processor, n) for n in parameter_names]
+        parameter_names = self.PARAMETERS.keys()
         return dict(zip(parameter_names, parameter_values))
 
     def set_parameters(self, **args):

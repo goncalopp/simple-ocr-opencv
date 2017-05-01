@@ -49,7 +49,11 @@ class TextGrounder(Grounder):
 
     def ground(self, imagefile, segments, text):
         """tries to grounds from a simple string"""
+<<<<<<< HEAD:simpleocr/grounding.py
         text = text_type(text)
+=======
+        text = str(text)
+>>>>>>> Remove unnecessary list() calls:grounding.py
         text = [c for c in text if c in string.ascii_letters + string.digits]
         if len(segments) != len(text):
             raise ValueError("segments/text length mismatch")

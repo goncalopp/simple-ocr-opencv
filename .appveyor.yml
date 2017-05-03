@@ -1,0 +1,13 @@
+environment:
+  matrix:
+    - PYTHON: "C:\\Python27"
+    - PYTHON: "C:\\Python27-x64"
+install:
+  - "%PYTHON%\\python.exe -m pip install opencv-python pillow mock"
+  - "%PYTHON%\\python.exe -m pip install codecov coverage"
+build: off
+test_script:
+  - "%PYTHON%\\python.exe testing.py"
+after_test:
+  - "%PYTHON%\\Scripts\\coverage.exe run testing.py"
+  - "%PYTHON%\\Scripts\\codecov.exe"

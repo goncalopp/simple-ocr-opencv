@@ -4,10 +4,10 @@ environment:
     - PYTHON: "C:\\Python27-x64"
 install:
   - "%PYTHON%\\python.exe -m pip install opencv-python pillow mock"
-  - "%PYTHON%\\python.exe -m pip install codecov coverage"
+  - "%PYTHON%\\python.exe -m pip install codecov coverage nose"
 build: off
 test_script:
-  - "%PYTHON%\\python.exe testing.py"
+  - "%PYTHON%\\Scripts\\nosetests.exe"
 after_test:
   - "%PYTHON%\\Scripts\\coverage.exe run testing.py"
   - "%PYTHON%\\Scripts\\codecov.exe"

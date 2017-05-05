@@ -2,12 +2,17 @@ environment:
   matrix:
     - PYTHON: "C:\\Python27"
     - PYTHON: "C:\\Python27-x64"
+    - PYTHON: "C:\\Python34"
+    - PYTHON: "C:\\Python34-x64"
+    - PYTHON: "C:\\Python35"
+    - PYTHON: "C:\\Python35-x64"
+    - PYTHON: "C:\\Python36"
+    - PYTHON: "C:\\Python36-x64"
 install:
   - "%PYTHON%\\python.exe -m pip install opencv-python pillow mock"
-  - "%PYTHON%\\python.exe -m pip install codecov coverage nose"
+  - "%PYTHON%\\python.exe -m pip install coverage nose"
 build: off
 test_script:
-  - "%PYTHON%\\Scripts\\nosetests.exe"
+  - "%PYTHON%\\Scripts\\nosetests.exe --with-coverage"
 after_test:
-  - "%PYTHON%\\Scripts\\coverage.exe run testing.py"
-  - "%PYTHON%\\Scripts\\codecov.exe"
+  - "%PYTHON%\\Scripts\\coveralls.exe"

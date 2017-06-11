@@ -27,7 +27,7 @@ class LineFinder(DisplayingProcessor):
         ys = ys.astype(numpy.float32)
         compactness_list, means_list, diffs, deviations = [], [], [], []
         start_n = 1
-        for k in range(start_n, max_lines):
+        for k in range(start_n, min(len(ys), max_lines)):
             compactness, classified_points, means = cv2.kmeans(data=ys, K=k, bestLabels=None, criteria=(
             cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_MAX_ITER, 1, 10), attempts=2, flags=cv2.KMEANS_PP_CENTERS)
             means = numpy.sort(means, axis=0)

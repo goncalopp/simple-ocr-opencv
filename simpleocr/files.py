@@ -3,7 +3,7 @@ import cv2
 from tesseract_utils import read_boxfile, write_boxfile
 
 IMAGE_EXTENSIONS = ['.png', '.tif', '.jpg', '.jpeg']
-DATA_DIRECTORY = 'data/'
+DATA_DIRECTORY = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data")
 GROUND_EXTENSIONS = ['.box']
 GROUND_EXTENSIONS_DEFAULT = GROUND_EXTENSIONS[0]
 
@@ -48,7 +48,6 @@ class ImageFile(object):
     """
 
     def __init__(self, image_path):
-        good_path = try_extensions(image_path, IMAGE_EXTENSIONS)
         good_path = try_extensions(os.path.join(DATA_DIRECTORY, image_path), IMAGE_EXTENSIONS)
         if not good_path:
             raise Exception("could not find file: " + image_path)

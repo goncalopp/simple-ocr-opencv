@@ -14,13 +14,42 @@ class Grounder(object):
         raise NotImplementedError()
 
 
+class TerminalGrounder(Grounder):
+    """
+    Labels by using raw_input() to capture a character each line
+    """
+
+    def ground(self, imagefile, segments, _=None):
+        classes = []
+        character = ""
+        print("Found %s segments to ground." % len(segments))
+        print("Type 'exit' to stop grounding the file.")
+        print("Type ' ' for anything that is not a character.")
+        print("Grounding will exit automatically after all segments.")
+        print("Going back to a previous segment is not possible at this time.")
+        for num in range(len(segments)):
+            while len(character) != 1:
+                character = input("Please enter the value for segment #%s:  " % (num+1))
+                if character == "exit":
+                    break
+                if len(character) != 1:
+                    print("That is not a single character. Please try again.")
+            if character == " ":
+                classes.append(NOT_A_SEGMENT)
+            else:
+                classes.append(character)
+            character = ""
+        classes = classes_to_numpy(classes)
+        imagefile.set_ground(segments, classes)
+
+
 class TextGrounder(Grounder):
     """labels from a string"""
 
     def ground(self, imagefile, segments, text):
         """tries to grounds from a simple string"""
         text = str(text)
-        text = [c for c in list(text) if c in string.ascii_letters + string.digits]
+        text = [c for c in text if c in string.ascii_letters + string.digits]
         if len(segments) != len(text):
             raise ValueError("segments/text length mismatch")
         classes = classes_to_numpy(text)
@@ -74,6 +103,6 @@ class UserGrounder(Grounder):
         classes = list(classes)
 
         classes = classes_to_numpy(classes)
-        print("classified ", numpy.count_nonzero(classes != classes_to_numpy(BLANK_CLASS)), "characters out of", max(
-            classes.shape))
+        print(("classified ", numpy.count_nonzero(classes != classes_to_numpy(BLANK_CLASS)), "characters out of", max(
+            classes.shape)))
         imagefile.set_ground(segments, classes)

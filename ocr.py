@@ -5,6 +5,7 @@ import classification as classifiers
 import feature_extraction as extractors
 import grounding as grounders
 from files import ImageFile
+from six import unichr
 
 SEGMENTERS = {
     "contour": segmenters.ContourSegmenter,
@@ -26,7 +27,7 @@ def show_differences(image, segments, ground_classes, result_classes):
 
 
 def reconstruct_chars(classes):
-    result_string = "".join(map(chr, classes))
+    result_string = "".join(map(unichr, classes))
     return result_string
 
 

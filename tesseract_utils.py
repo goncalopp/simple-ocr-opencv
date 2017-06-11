@@ -1,5 +1,9 @@
 from classification import classes_from_numpy, classes_to_numpy
 from segmentation import segments_from_numpy, segments_to_numpy
+import sys
+if sys.version_info[0] is not 3:
+    # Import this only for Python 2
+    from io import open
 
 
 def read_boxfile(path):

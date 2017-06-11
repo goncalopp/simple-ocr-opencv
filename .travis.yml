@@ -5,12 +5,6 @@ python:
 virtualenv:
     system_site_packages: true
 install:
-<<<<<<< HEAD
-  - sudo apt-get install python-opencv coverage
-script:
-  - sudo -H python -m pip install .
-  - nosetests
-=======
   - sudo apt-get install python-opencv
 script: nosetests
 >>>>>>> Update CI files for merging

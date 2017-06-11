@@ -8,7 +8,7 @@ install:
 <<<<<<< HEAD
   - sudo apt-get install python-opencv coverage
 script:
-  - python setup.py install
+  - sudo -H python -m pip install .
   - nosetests
 =======
   - sudo apt-get install python-opencv

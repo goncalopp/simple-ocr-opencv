@@ -90,7 +90,7 @@ class UserGrounder(Grounder):
             elif key == 65363:  # ->
                 i += 1
             elif key in allowed_chars:
-                classes[i] = chr(key)
+                classes[i] = unichr(key)
                 i += 1
             if i >= len(classes):
                 i = 0

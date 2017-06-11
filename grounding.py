@@ -6,7 +6,7 @@ import numpy
 import string
 from six import text_type, unichr, moves
 
-NOT_A_SEGMENT = chr(10)
+NOT_A_SEGMENT = unichr(10)
 
 
 class Grounder(object):

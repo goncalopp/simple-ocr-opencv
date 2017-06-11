@@ -4,6 +4,7 @@ from classification import classes_to_numpy, classes_from_numpy, BLANK_CLASS
 from opencv_utils import show_image_and_wait_for_key, draw_segments, draw_classes
 import numpy
 import string
+from six import text_type, unichr
 
 NOT_A_SEGMENT = chr(10)
 
@@ -48,7 +49,7 @@ class TextGrounder(Grounder):
 
     def ground(self, imagefile, segments, text):
         """tries to grounds from a simple string"""
-        text = str(text)
+        text = text_type(text)
         text = [c for c in text if c in string.ascii_letters + string.digits]
         if len(segments) != len(text):
             raise ValueError("segments/text length mismatch")
@@ -89,7 +90,7 @@ class UserGrounder(Grounder):
             elif key == 65363:  # ->
                 i += 1
             elif key in allowed_chars:
-                classes[i] = chr(key)
+                classes[i] = unichr(key)
                 i += 1
             if i >= len(classes):
                 i = 0

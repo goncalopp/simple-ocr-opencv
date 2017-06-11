@@ -2,12 +2,13 @@ from feature_extraction import FEATURE_DATATYPE
 import numpy
 import cv2
 from opencv_utils import get_opencv_version
+from six import unichr
 
 CLASS_DATATYPE = numpy.uint16
 CLASS_SIZE = 1
 CLASSES_DIRECTION = 0  # vertical - a classes COLUMN
 
-BLANK_CLASS = chr(35)  # marks unclassified elements
+BLANK_CLASS = unichr(35)  # marks unclassified elements
 
 
 def classes_to_numpy(classes):
@@ -15,7 +16,7 @@ def classes_to_numpy(classes):
     import array
     # utf-32 starts with constant ''\xff\xfe\x00\x00', then has little endian 32 bits chars
     # this assumes little endian architecture!
-    assert chr(15).encode('utf-32') == b'\xff\xfe\x00\x00\x0f\x00\x00\x00'
+    assert unichr(15).encode('utf-32') == b'\xff\xfe\x00\x00\x0f\x00\x00\x00'
     assert array.array("I").itemsize == 4
     int_classes = array.array("I", "".join(classes).encode('utf-32')[4:])
     assert len(int_classes) == len(classes)
@@ -27,7 +28,7 @@ def classes_to_numpy(classes):
 def classes_from_numpy(classes):
     """reverses classes_to_numpy"""
     classes = classes if CLASSES_DIRECTION == 0 else classes.tranpose()
-    classes = list(map(chr, classes))
+    classes = list(map(unichr, classes))
     return classes
 
 

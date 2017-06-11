@@ -10,22 +10,23 @@ class TestGrounding(unittest.TestCase):
     def setUp(self):
         self.img = ImageFile('digits1')
         self.img.remove_ground()
-        self.assertFalse(self.img.is_grounded())
+        self.assertFalse(self.img.is_grounded)
         self.segments = ContourSegmenter().process(self.img.image)
 
     def test_textgrounder(self):
         grounder = TextGrounder()
         characters = "0" * len(self.segments)
         grounder.ground(self.img, self.segments, characters)
-        self.assertTrue(self.img.is_grounded())
+        self.assertTrue(self.img.is_grounded)
         self.assertEqual(reconstruct_chars(self.img.ground.classes), characters)
+
 
     def test_textgrounder_wrong_len(self):
         grounder = TextGrounder()
         characters = "0" * len(self.segments)
         with self.assertRaises(ValueError):
             grounder.ground(self.img, self.segments, characters[:-4])
-        self.assertFalse(self.img.is_grounded())
+        self.assertFalse(self.img.is_grounded)
 
     def test_usergrounder(self):
         ESC_KEY = 27
@@ -40,7 +41,7 @@ class TestGrounding(unittest.TestCase):
         with mock.patch('cv2.waitKey', mock_input):
             with mock.patch('cv2.imshow'):
                 grounder.ground(self.img, self.segments)
-        self.assertTrue(self.img.is_grounded())
+        self.assertTrue(self.img.is_grounded)
         self.assertEqual(reconstruct_chars(self.img.ground.classes), "0" * len(self.segments))
 
     def test_terminal_grounder(self):
@@ -53,5 +54,6 @@ class TestGrounding(unittest.TestCase):
 
         with mock.patch('__builtin__.raw_input', mock_input):
             terminal.ground(self.img, self.segments)
-        self.assertTrue(self.img.is_grounded())
+
+        self.assertTrue(self.img.is_grounded)
         self.assertEqual(reconstruct_chars(self.img.ground.classes), "0" * len(self.segments))

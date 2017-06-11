@@ -5,7 +5,7 @@ from segmentation import segments_from_numpy, segments_to_numpy
 def read_boxfile(path):
     classes = []
     segments = []
-    with open(path) as f:
+    with open(path, encoding="utf-8") as f:
         for line in f:
             s = line.split(" ")
             assert len(s) == 6

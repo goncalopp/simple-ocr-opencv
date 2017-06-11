@@ -13,7 +13,7 @@ SEGMENTS_DIRECTION = 0  # vertical axis in numpy
 def segments_from_numpy(segments):
     """reverses segments_to_numpy"""
     segments = segments if SEGMENTS_DIRECTION == 0 else segments.tranpose()
-    segments = [list(map(int, s)) for s in segments]
+    segments = [map(int, s) for s in segments]
     return segments
 
 

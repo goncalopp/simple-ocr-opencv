@@ -1,10 +1,8 @@
+
 language: python
 required: sudo
 python:
-    - "2.7"
-    - "3.4"
-    - "3.5"
-    - "3.6"
+    "2.7"
 virtualenv:
     system_site_packages: true
 install:
@@ -13,4 +11,3 @@ script: nosetests
 after_success:
   - coverage run nosetests
   - coveralls
-

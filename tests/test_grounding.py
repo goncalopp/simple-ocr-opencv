@@ -4,6 +4,11 @@ from files import ImageFile
 from grounding import TextGrounder, TerminalGrounder, UserGrounder
 from segmentation import ContourSegmenter
 from ocr import reconstruct_chars
+import sys
+
+
+def is_python_3():
+    return sys.version_info[0] is 3
 
 
 class TestGrounding(unittest.TestCase):
@@ -19,7 +24,6 @@ class TestGrounding(unittest.TestCase):
         grounder.ground(self.img, self.segments, characters)
         self.assertTrue(self.img.is_grounded)
         self.assertEqual(reconstruct_chars(self.img.ground.classes), characters)
-
 
     def test_textgrounder_wrong_len(self):
         grounder = TextGrounder()
@@ -52,8 +56,12 @@ class TestGrounding(unittest.TestCase):
         def mock_input(prompt):
             return next(mock_input_gen)
 
-        with mock.patch('__builtin__.raw_input', mock_input):
-            terminal.ground(self.img, self.segments)
+        if not is_python_3():
+            with mock.patch('__builtin__.input', mock_input):
+                terminal.ground(self.img, self.segments)
+        else:
+            with mock.patch('builtins.input', mock_input):
+                terminal.ground(self.img, self.segments)
 
         self.assertTrue(self.img.is_grounded)
         self.assertEqual(reconstruct_chars(self.img.ground.classes), "0" * len(self.segments))

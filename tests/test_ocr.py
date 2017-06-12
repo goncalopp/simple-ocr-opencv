@@ -8,19 +8,25 @@ from ocr import OCR, reconstruct_chars
 
 
 class TestOCR(unittest.TestCase):
-    def test_ocr_digits(self):
+    def _test_ocr(self, train_file, test_file):
         # get data from images
-        img1 = ImageFile('digits1')
-        img2 = ImageFile('digits2')
-        ground_truth = img2.ground.classes
-        img2.remove_ground()
+        ground_truth = test_file.ground.classes
+        test_file.remove_ground()
         # create OCR
-        segmenter = ContourSegmenter()
+        segmenter = ContourSegmenter(blur_y=5, blur_x=5)
         extractor = SimpleFeatureExtractor()
         classifier = KNNClassifier()
         ocr = OCR(segmenter, extractor, classifier)
         # train and test
-        ocr.train(img1)
-        chars, classes, _ = ocr.ocr(img2, show_steps=False)
-        self.assertEqual(list(classes), list(ground_truth))
+        ocr.train(train_file)
+        chars, classes, _ = ocr.ocr(test_file, show_steps=False)
+        print chars
+        print reconstruct_chars(ground_truth)
         self.assertEqual(chars, reconstruct_chars(ground_truth))
+        self.assertEqual(list(classes), list(ground_truth))
+
+    def test_ocr_digits(self):
+        self._test_ocr(ImageFile('digits1'), ImageFile('digits2'))
+
+    def test_ocr_unicode(self):
+        self._test_ocr(ImageFile('unicode1'), ImageFile('unicode1'))

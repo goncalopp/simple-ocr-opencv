@@ -3,7 +3,6 @@ from simpleocr import opencv_utils
 from simpleocr import ImageFile
 
 
-
 class TestOpenCVUtils(unittest.TestCase):
     def test_opencv_brightness_raise(self):
         image = ImageFile('digits1')

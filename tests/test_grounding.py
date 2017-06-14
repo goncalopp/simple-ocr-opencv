@@ -51,8 +51,12 @@ class TestGrounding(unittest.TestCase):
         def mock_input(prompt):
             return next(mock_input_gen)
 
-        with mock.patch("six.moves.input", mock_input):
-            terminal.ground(self.img, self.segments)
+        if not is_python_3():
+            with mock.patch('__builtin__.input', mock_input):
+                terminal.ground(self.img, self.segments)
+        else:
+            with mock.patch('builtins.input', mock_input):
+                terminal.ground(self.img, self.segments)
 
         self.assertTrue(self.img.is_grounded)
         self.assertEqual(reconstruct_chars(self.img.ground.classes), "0" * len(self.segments))

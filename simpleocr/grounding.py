@@ -1,7 +1,7 @@
 """various classes for establishing ground truth"""
 
-from classification import classes_to_numpy, classes_from_numpy, BLANK_CLASS
-from opencv_utils import show_image_and_wait_for_key, draw_segments, draw_classes
+from simpleocr.classification import classes_to_numpy, classes_from_numpy, BLANK_CLASS
+from simpleocr.opencv_utils import show_image_and_wait_for_key, draw_segments, draw_classes
 import numpy
 import string
 from six import text_type, unichr, moves
@@ -49,11 +49,7 @@ class TextGrounder(Grounder):
 
     def ground(self, imagefile, segments, text):
         """tries to grounds from a simple string"""
-<<<<<<< HEAD:simpleocr/grounding.py
         text = text_type(text)
-=======
-        text = str(text)
->>>>>>> Remove unnecessary list() calls:grounding.py
         text = [c for c in text if c in string.ascii_letters + string.digits]
         if len(segments) != len(text):
             raise ValueError("segments/text length mismatch")

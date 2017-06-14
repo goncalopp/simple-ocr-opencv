@@ -5,6 +5,7 @@ from opencv_utils import show_image_and_wait_for_key, draw_segments, draw_classe
 import numpy
 import string
 from six import text_type, unichr
+from six.moves import input
 
 NOT_A_SEGMENT = unichr(10)
 

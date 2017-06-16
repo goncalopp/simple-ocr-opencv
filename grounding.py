@@ -4,7 +4,7 @@ from classification import classes_to_numpy, classes_from_numpy, BLANK_CLASS
 from opencv_utils import show_image_and_wait_for_key, draw_segments, draw_classes
 import numpy
 import string
-from six import text_type, unichr
+from six import text_type, unichr, moves
 
 NOT_A_SEGMENT = unichr(10)
 
@@ -30,7 +30,7 @@ class TerminalGrounder(Grounder):
         print("Going back to a previous segment is not possible at this time.")
         for num in range(len(segments)):
             while len(character) != 1:
-                character = input("Please enter the value for segment #%s:  " % (num+1))
+                character = moves.input("Please enter the value for segment #%s:  " % (num+1))
                 if character == "exit":
                     break
                 if len(character) != 1:

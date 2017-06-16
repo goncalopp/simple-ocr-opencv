@@ -1,12 +1,12 @@
 from classification import classes_from_numpy, classes_to_numpy
 from segmentation import segments_from_numpy, segments_to_numpy
-from io import open
+import io
 
 
 def read_boxfile(path):
     classes = []
     segments = []
-    with open(path, encoding="utf-8") as f:
+    with io.open(path, encoding="utf-8") as f:
         for line in f:
             s = line.split(" ")
             assert len(s) == 6
@@ -18,6 +18,6 @@ def read_boxfile(path):
 
 def write_boxfile(path, classes, segments):
     classes, segments = classes_from_numpy(classes), segments_from_numpy(segments)
-    with open(path, 'w') as f:
+    with io.open(path, 'w') as f:
         for c, s in zip(classes, segments):
             f.write(c.encode('utf-8') + ' ' + ' '.join(map(str, s)) + " 0\n")

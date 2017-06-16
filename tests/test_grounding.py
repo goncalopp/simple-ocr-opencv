@@ -7,10 +7,6 @@ from ocr import reconstruct_chars
 import sys
 
 
-def is_python_3():
-    return sys.version_info[0] is 3
-
-
 class TestGrounding(unittest.TestCase):
     def setUp(self):
         self.img = ImageFile('digits1')
@@ -56,12 +52,8 @@ class TestGrounding(unittest.TestCase):
         def mock_input(prompt):
             return next(mock_input_gen)
 
-        if not is_python_3():
-            with mock.patch('__builtin__.input', mock_input):
-                terminal.ground(self.img, self.segments)
-        else:
-            with mock.patch('builtins.input', mock_input):
-                terminal.ground(self.img, self.segments)
+        with mock.patch("six.moves.input", mock_input):
+            terminal.ground(self.img, self.segments)
 
         self.assertTrue(self.img.is_grounded)
         self.assertEqual(reconstruct_chars(self.img.ground.classes), "0" * len(self.segments))

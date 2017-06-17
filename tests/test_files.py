@@ -4,6 +4,7 @@ from files import ImageFile
 TEST_FILE = 'digits1'
 UNICODE_TEST_FILE = 'unicode1'
 
+
 class TestImageFile(unittest.TestCase):
     def test_ground(self):
         imgf = ImageFile(TEST_FILE)

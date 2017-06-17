@@ -129,7 +129,7 @@ class ProcessorStack(Processor):
         """gets from all wrapped processors"""
         d = {}
         for p in self.processors:
-            parameter_names = p.PARAMETERS.keys()
+            parameter_names = list(p.PARAMETERS.keys())
             parameter_values = [getattr(p, n) for n in parameter_names]
             d.update(dict(zip(parameter_names, parameter_values)))
         return d

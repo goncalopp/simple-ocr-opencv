@@ -48,6 +48,7 @@ class ImageFile(object):
     """
 
     def __init__(self, image_path):
+        good_path = try_extensions(image_path, IMAGE_EXTENSIONS)
         good_path = try_extensions(os.path.join(DATA_DIRECTORY, image_path), IMAGE_EXTENSIONS)
         if not good_path:
             raise Exception("could not find file: " + image_path)

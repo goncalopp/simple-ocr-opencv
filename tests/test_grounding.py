@@ -4,6 +4,7 @@ from files import ImageFile
 from grounding import TextGrounder, TerminalGrounder, UserGrounder
 from segmentation import ContourSegmenter
 from ocr import reconstruct_chars
+import sys
 
 
 class TestGrounding(unittest.TestCase):
@@ -18,7 +19,7 @@ class TestGrounding(unittest.TestCase):
         characters = "0" * len(self.segments)
         grounder.ground(self.img, self.segments, characters)
         self.assertTrue(self.img.is_grounded)
-        self.assertEquals(reconstruct_chars(self.img.ground.classes), characters)
+        self.assertEqual(reconstruct_chars(self.img.ground.classes), characters)
 
     def test_textgrounder_wrong_len(self):
         grounder = TextGrounder()
@@ -41,7 +42,7 @@ class TestGrounding(unittest.TestCase):
             with mock.patch('cv2.imshow'):
                 grounder.ground(self.img, self.segments)
         self.assertTrue(self.img.is_grounded)
-        self.assertEquals(reconstruct_chars(self.img.ground.classes), "0" * len(self.segments))
+        self.assertEqual(reconstruct_chars(self.img.ground.classes), "0" * len(self.segments))
 
     def test_terminal_grounder(self):
         terminal = TerminalGrounder()
@@ -51,7 +52,8 @@ class TestGrounding(unittest.TestCase):
         def mock_input(prompt):
             return next(mock_input_gen)
 
-        with mock.patch('__builtin__.raw_input', mock_input):
+        with mock.patch("six.moves.input", mock_input):
             terminal.ground(self.img, self.segments)
+
         self.assertTrue(self.img.is_grounded)
-        self.assertEquals(reconstruct_chars(self.img.ground.classes), "0" * len(self.segments))
+        self.assertEqual(reconstruct_chars(self.img.ground.classes), "0" * len(self.segments))

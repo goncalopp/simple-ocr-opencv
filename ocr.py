@@ -5,6 +5,7 @@ import classification as classifiers
 import feature_extraction as extractors
 import grounding as grounders
 from files import ImageFile
+from six import unichr
 
 SEGMENTERS = {
     "contour": segmenters.ContourSegmenter,

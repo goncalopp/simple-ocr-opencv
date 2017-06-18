@@ -20,8 +20,8 @@ class TestOCR(unittest.TestCase):
         # train and test
         ocr.train(train_file)
         chars, classes, _ = ocr.ocr(test_file, show_steps=False)
-        print chars
-        print reconstruct_chars(ground_truth)
+        print(chars)
+        print(reconstruct_chars(ground_truth))
         self.assertEqual(chars, reconstruct_chars(ground_truth))
         self.assertEqual(list(classes), list(ground_truth))
 

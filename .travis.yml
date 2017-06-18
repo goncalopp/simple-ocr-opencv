@@ -5,9 +5,10 @@ python:
 virtualenv:
     system_site_packages: true
 install:
-  - sudo apt-get install python-opencv nose
+  - sudo apt-get install python-opencv
+  - python -m pip install nose pillow six
 script:
-  - python setup.py install
+  - python -m pip install .
   - python -m nose
 after_success:
   - coverage run nosetests

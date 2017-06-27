@@ -1,5 +1,5 @@
 import unittest
-from simpleocr import ImageFile
+from simpleocr.files import ImageFile
 
 TEST_FILE = 'digits1'
 UNICODE_TEST_FILE = 'unicode1'

@@ -1,9 +1,9 @@
 import unittest
 import mock
-from simpleocr import ImageFile
-from simpleocr import TextGrounder, TerminalGrounder, UserGrounder
-from simpleocr import ContourSegmenter
-from simpleocr import reconstruct_chars
+from simpleocr.files import ImageFile
+from simpleocr.grounding import TextGrounder, TerminalGrounder, UserGrounder
+from simpleocr.segmentation import ContourSegmenter
+from simpleocr.ocr import reconstruct_chars
 
 
 class TestGrounding(unittest.TestCase):

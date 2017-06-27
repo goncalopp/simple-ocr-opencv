@@ -1,6 +1,6 @@
 import unittest
 from simpleocr import opencv_utils
-from simpleocr import ImageFile
+from simpleocr.files import ImageFile
 
 
 class TestOpenCVUtils(unittest.TestCase):

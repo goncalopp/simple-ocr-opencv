@@ -1,5 +1,5 @@
 import unittest
-from simpleocr import ContourSegmenter
+from simpleocr.segmentation import ContourSegmenter
 from simpleocr import SimpleFeatureExtractor
 from simpleocr import ImageFile
 from simpleocr import KNNClassifier

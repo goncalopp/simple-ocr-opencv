@@ -1,6 +1,6 @@
-from opencv_utils import show_image_and_wait_for_key, BrightnessProcessor, draw_segments
-from segmentation_aux import contained_segments_matrix, LineFinder, guess_segments_lines
-from processor import DisplayingProcessor, create_broadcast
+from .opencv_utils import show_image_and_wait_for_key, BrightnessProcessor, draw_segments
+from .segmentation_aux import contained_segments_matrix, LineFinder, guess_segments_lines
+from .processor import DisplayingProcessor, create_broadcast
 import numpy
 
 

@@ -1,6 +1,6 @@
-from files import ImageFile
-from grounding import UserGrounder
-from segmentation import ContourSegmenter, draw_segments
+from .files import ImageFile
+from .grounding import UserGrounder
+from .segmentation import ContourSegmenter, draw_segments
 
 segmenter = ContourSegmenter(blur_y=5, blur_x=5, block_size=11, c=10)
 new_image = ImageFile('digits1')

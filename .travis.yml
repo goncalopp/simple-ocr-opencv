@@ -9,6 +9,7 @@ install:
   - python -m pip install nose
 script:
   - python -m pip install .
+  - rm -R simpleocr
   - python -m nose
 after_success:
   - coverage run nosetests

@@ -14,5 +14,6 @@ setup(
                  "Programming Language :: Python :: 3",
                  "License :: OSI Approved :: GNU Affero General Public License v2 or later (AGPLv2+)"],
     include_package_data=True,
-    install_requires=["six", "pillow"]
+    install_requires=["six", "pillow"],
+    zip_safe=True
 )

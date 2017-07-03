@@ -1,9 +1,10 @@
 import os
 import cv2
 from .tesseract_utils import read_boxfile, write_boxfile
+from pkg_resources import resource_filename
 
 IMAGE_EXTENSIONS = ['.png', '.tif', '.jpg', '.jpeg']
-DATA_DIRECTORY = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data")
+DATA_DIRECTORY = resource_filename("simpleocr", "data")
 GROUND_EXTENSIONS = ['.box']
 GROUND_EXTENSIONS_DEFAULT = GROUND_EXTENSIONS[0]
 

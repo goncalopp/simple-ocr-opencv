@@ -1,0 +1,4 @@
+include README.md
+include LICENSE
+include AUTHORS
+recursive-include simpleocr data *

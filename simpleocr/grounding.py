@@ -1,7 +1,7 @@
 """various classes for establishing ground truth"""
 
-from classification import classes_to_numpy, classes_from_numpy, BLANK_CLASS
-from opencv_utils import show_image_and_wait_for_key, draw_segments, draw_classes
+from .classification import classes_to_numpy, classes_from_numpy, BLANK_CLASS
+from .opencv_utils import show_image_and_wait_for_key, draw_segments, draw_classes
 import numpy
 import string
 from six import text_type, unichr, moves

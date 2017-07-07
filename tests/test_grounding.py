@@ -1,10 +1,9 @@
 import unittest
 import mock
-from files import ImageFile
-from grounding import TextGrounder, TerminalGrounder, UserGrounder
-from segmentation import ContourSegmenter
-from ocr import reconstruct_chars
-import sys
+from simpleocr.files import ImageFile
+from simpleocr.grounding import TextGrounder, TerminalGrounder, UserGrounder
+from simpleocr.segmentation import ContourSegmenter
+from simpleocr.ocr import reconstruct_chars
 
 
 class TestGrounding(unittest.TestCase):
@@ -52,7 +51,7 @@ class TestGrounding(unittest.TestCase):
         def mock_input(prompt):
             return next(mock_input_gen)
 
-        with mock.patch("six.moves.input", mock_input):
+        with mock.patch('six.moves.input', mock_input):
             terminal.ground(self.img, self.segments)
 
         self.assertTrue(self.img.is_grounded)

@@ -1,10 +1,10 @@
 import numpy
 from .opencv_utils import show_image_and_wait_for_key, draw_segments
-import simpleocr.segmentation as segmenters
-import simpleocr.classification as classifiers
-import simpleocr.feature_extraction as extractors
-import simpleocr.grounding as grounders
-from simpleocr.files import ImageFile
+from . import segmentation as segmenters
+from . import classification as classifiers
+from . import feature_extraction as extractors
+from . import grounding as grounders
+from .files import ImageFile
 from six import unichr
 
 SEGMENTERS = {

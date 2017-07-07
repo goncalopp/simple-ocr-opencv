@@ -6,7 +6,6 @@ virtualenv:
     system_site_packages: true
 install:
   - sudo apt-get install python-opencv
-  - python -m pip install nose
 script:
   - python -m pip install .
   - rm -R simpleocr

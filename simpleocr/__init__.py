@@ -36,7 +36,7 @@ except ImportError as e:
         print(
             "OpenCV-Python could not be imported, but there are no installation instructions available for your OS."
         )
-    raise e
+    raise
 
 
 # Classifiers

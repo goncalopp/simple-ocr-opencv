@@ -5,6 +5,7 @@ import classification as classifiers
 import feature_extraction as extractors
 import grounding as grounders
 from files import ImageFile
+from six import unichr
 
 SEGMENTERS = {
     "contour": segmenters.ContourSegmenter,
@@ -58,7 +59,7 @@ class OCR(object):
         """feeds the training data to the OCR"""
         if not isinstance(image_file, ImageFile):
             image_file = ImageFile(image_file)
-        if not image_file.is_grounded():
+        if not image_file.is_grounded:
             raise Exception("The provided file is not grounded")
         features = self.extractor.extract(image_file.image, image_file.ground.segments)
         self.classifier.train(features, image_file.ground.classes)

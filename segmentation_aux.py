@@ -2,6 +2,7 @@ from processor import Processor, DisplayingProcessor
 from opencv_utils import draw_lines, show_image_and_wait_for_key
 import numpy
 import cv2
+from functools import reduce
 
 
 class SegmentOrderer(Processor):
@@ -15,7 +16,7 @@ class SegmentOrderer(Processor):
         # return segments
         mlh, mlw = self.max_line_height, self.max_line_width
         s = segments.astype(numpy.uint32)  # prevent overflows
-        order = mlw * (s[:, 1] / mlh) + s[:, 0]
+        order = mlw * (s[:, 1] // mlh) + s[:, 0]
         sort_order = numpy.argsort(order)
         return segments[sort_order]
 
@@ -27,7 +28,7 @@ class LineFinder(DisplayingProcessor):
         ys = ys.astype(numpy.float32)
         compactness_list, means_list, diffs, deviations = [], [], [], []
         start_n = 1
-        for k in range(start_n, max_lines):
+        for k in range(start_n, min(len(ys), max_lines)):
             compactness, classified_points, means = cv2.kmeans(data=ys, K=k, bestLabels=None, criteria=(
             cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_MAX_ITER, 1, 10), attempts=2, flags=cv2.KMEANS_PP_CENTERS)
             means = numpy.sort(means, axis=0)
@@ -107,8 +108,8 @@ def contained_segments_matrix(segments):
     x2, y2 = x1 + segments[:, 2], y1 + segments[:, 3]
     n = len(segments)
 
-    x1so, x2so, y1so, y2so = map(numpy.argsort, (x1, x2, y1, y2))
-    x1soi, x2soi, y1soi, y2soi = map(numpy.argsort, (x1so, x2so, y1so, y2so))  # inverse transformations
+    x1so, x2so, y1so, y2so = list(map(numpy.argsort, (x1, x2, y1, y2)))
+    x1soi, x2soi, y1soi, y2soi = list(map(numpy.argsort, (x1so, x2so, y1so, y2so)))  # inverse transformations
     # let rows be x1 and collumns be x2. this array represents where x1<x2
     o1 = numpy.triu(numpy.ones((n, n)), k=1).astype(bool)
     # let rows be x1 and collumns be x2. this array represents where x1>x2

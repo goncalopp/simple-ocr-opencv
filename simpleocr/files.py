@@ -37,23 +37,34 @@ class Image(object):
     Complete class that contains functions for creation from file,
     as well as from PIL Images. Also supports grounding in memory.
     """
-    def __init__(self, array=None, path=None, debug=True):
+    def __init__(self, array=None, path=None, debug=False):
+        # If array is actually a numpy array the truth value is ambiguous so it should be compared to None
         if array is None:
+            # If array and path are both None, the object is created without any image data, so raise a ValueError
             if not path:
                 raise ValueError("Image instance cannot be created without either an image array or an image path")
+            # Make sure the path is an absolute path to the image
             path = self.get_absolute_path(path)
+            # Read the image and get an OpenCV compatible array
             array = cv2.imread(path)
+        # Set all the attributes for the instance
         self.image = array
         self.path = path
         self._debug = debug
+        # If a path is set, then the file is created with a file reference, so the existence of a ground file should
+        # be checked, and if it's available, the old ground data should be restored to memory
         if self.path:
+            # Get the correct path for a ground file
             self.ground_path = try_extensions(GROUND_EXTENSIONS, os.path.splitext(self.path)[0])
             if os.path.exists(self.ground_path):
+                # Read the old ground data
                 self.ground = GroundFile(self.ground_path)
                 self.ground.read()
             else:
+                # If the file is not available, set ground data to None
                 self.ground = None
         else:
+            # No file reference is available, so no ground data is available as the file has not yet been grounded
             self.ground = None
             self.ground_path = None
 
@@ -76,7 +87,7 @@ class Image(object):
         return Image(Image.get_array_from_pil(pillow))
 
     @staticmethod
-    def get_absolute_path(image, debug=True):
+    def get_absolute_path(image):
         """
         Get the absolute path for an image. Valid inputs are:
         - Relative path with or without extension
@@ -85,24 +96,20 @@ class Image(object):
         :param image: image path in str type
         :return: The absolute image path
         """
+        # If the path exists, return the path, but make sure it's an absolute path first
         if os.path.exists(image):
             return os.path.abspath(image)
-        image_with_extension = try_extensions(IMAGE_EXTENSIONS, image)
+        # Try to find the file with the passed path with the various extensions
+        image_with_extension = try_extensions(IMAGE_EXTENSIONS, os.path.splitext(image)[0])
         if image_with_extension:
-            return image_with_extension
+            return os.path.abspath(image_with_extension)
+        # The file must be in the data directory if it has not yet been found
         image_basename = os.path.basename(image)
-        image_name, image_ext = os.path.splitext(image_basename)
-        if image_ext == "":
-            image_data_dir = os.path.join(DATA_DIRECTORY, image_name)
-            image_name = try_extensions(IMAGE_EXTENSIONS, image_data_dir)
-            if not image_name:
-                raise Image.FileNotFound
-            return image_name
-        else:
-            image_path = os.path.join(DATA_DIRECTORY, image_basename)
-            if not os.path.exists(image_path):
-                raise Image.FileNotFound
-            return image_path
+        image_datadir = try_extensions(IMAGE_EXTENSIONS, os.path.join(DATA_DIRECTORY, image_basename))
+        if image_datadir:
+            return os.path.abspath(image_datadir)
+        # The file cannot be found, so raise a FileNotFound Error
+        raise Image.FileNotFound
 
     @staticmethod
     def get_array_from_pil(pillow):

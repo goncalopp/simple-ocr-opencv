@@ -77,9 +77,7 @@ class Image(object):
         :param path: image path, str
         :return: Image object with file reference
         """
-        path = Image.get_absolute_path(path)
-        array = cv2.imread(path)
-        return Image(array=array, path=path)
+        return Image(path=path)
 
     @staticmethod
     def from_pil(pillow):
@@ -109,7 +107,7 @@ class Image(object):
         if image_datadir:
             return os.path.abspath(image_datadir)
         # The file cannot be found, so raise a FileNotFound Error
-        raise Image.FileNotFound
+        raise IOError
 
     @staticmethod
     def get_array_from_pil(pillow):
@@ -135,49 +133,32 @@ class Image(object):
         """
         return self.path is not None
 
-    def set_ground(self, segments, classes, write=False):
+    def set_ground(self, segments, classes, write_file=False):
         """
         Creates the ground data in memory, optionally writing it to a ground file,
         if write is set to True
-        :param segments: segments to be grounded
-        :param classes: classes to be grounded
-        :param write: if True, writes the ground data to a ground file
-        :return: None
         """
         if self.is_grounded and self._debug:
-            print("Warning: grounding already grounded file")
+            print("Warning: grounding already grounded Image")
         self.ground = GroundFile(self.ground_path)
         self.ground.segments = segments
         self.ground.classes = classes
-        if write:
+        if write_file:
             if not self.ground_path:
                 raise ValueError("Cannot write ground file for an Image without file reference")
             self.ground.write()
 
-    def remove_ground(self, remove=False):
+    def remove_ground(self, remove_file=False):
         """
         Removes the grounding data in memory for the Image, optionally deleting its
         ground file along with it, if remove is set to True
-        :param remove: if True, also removes the ground file
-        :return: None
         """
         if not self.is_grounded:
-            print("Warning: removing ground for file without ground data")
+            print("Warning: removing ground for Image without ground data")
         self.ground = None
-        if remove:
+        if remove_file:
             if not self.ground_path:
                 raise ValueError("Cannot remove ground file for an Image without file reference")
             os.remove(self.ground_path)
-
-    class FileNotFound(IOError):
-        """
-        Child-error for IOError for use in the Image class. If error handling is required,
-        this error can still be caught in an except block catching an IOError, but it will
-        be immediately clear in stack trace where this error is thrown otherwise.
-
-        Note: This error is defined within the Image class as to not override a built-in error
-        under Python 3.
-        """
-        pass
 
 

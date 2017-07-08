@@ -1,7 +1,8 @@
 import os
+import functools
+from pkg_resources import resource_filename
 import cv2
 from .tesseract_utils import read_boxfile, write_boxfile
-from pkg_resources import resource_filename
 
 IMAGE_EXTENSIONS = ['.png', '.tif', '.jpg', '.jpeg']
 DATA_DIRECTORY = resource_filename("simpleocr", "data")
@@ -9,27 +10,29 @@ GROUND_EXTENSIONS = ['.box']
 GROUND_EXTENSIONS_DEFAULT = GROUND_EXTENSIONS[0]
 
 
-def split_extension(path):
-    """splits filename (with extension) into filename and extension"""
-    try:
-        i = path.index(".", -5)
-        return path[:i], path[i:]
-    except ValueError:
-        return path, ""
+def open_img(path_or_name):
+    """
+    Fuzzy finds a image file given a absolute or relative path, or a name.
+    The name might have no extension, or be in the DATA_DIRECTORY
+    """
+    try_img_ext = functools.partial(try_extensions, IMAGE_EXTENSIONS)
+    data_dir_path = os.path.join(DATA_DIRECTORY, path_or_name)
+    path = path_or_name
+    if not os.path.exists(path):
+        # proceed even when there's no result. ImageFile decides on the exception to raise
+        path = try_img_ext(path_or_name) or try_img_ext(data_dir_path) or path
+    return ImageFile(path)
 
-
-def try_extensions(path, extensions):
+def try_extensions(extensions, path):
     """checks if various extensions of a path exist"""
-    if os.path.exists(path):
-        return path
-    for ext in extensions:
-        p = path + ext
-        if os.path.exists(p):
-            return p
+    for ext in [""] + extensions:
+        if os.path.exists(path + ext):
+            return path + ext
     return None
 
 
 class GroundFile(object):
+    """A file with ground truth data about a image (i.e.: characters and their position)"""
     def __init__(self, path):
         self.path = path
         self.segments = None
@@ -49,19 +52,17 @@ class ImageFile(object):
     """
 
     def __init__(self, image_path):
-        good_path = try_extensions(image_path, IMAGE_EXTENSIONS)
-        good_path = try_extensions(os.path.join(DATA_DIRECTORY, image_path), IMAGE_EXTENSIONS)
-        if not good_path:
-            raise Exception("could not find file: " + image_path)
-        self.image_path = good_path
+        if not os.path.exists(image_path):
+            raise IOError("Image file not found: " + image_path)
+        self.image_path = image_path
         self.image = cv2.imread(self.image_path)
-        basename = split_extension(good_path)[0]
-        self.ground_path = try_extensions(basename, GROUND_EXTENSIONS)
+        basepath = os.path.splitext(image_path)[0]
+        self.ground_path = try_extensions(GROUND_EXTENSIONS, basepath)
         if self.ground_path:
             self.ground = GroundFile(self.ground_path)
             self.ground.read()
         else:
-            self.ground_path = basename + GROUND_EXTENSIONS_DEFAULT
+            self.ground_path = basepath + GROUND_EXTENSIONS_DEFAULT
             self.ground = None
 
     @property

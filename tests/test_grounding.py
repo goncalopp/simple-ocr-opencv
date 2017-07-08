@@ -1,6 +1,6 @@
 import unittest
 import mock
-from simpleocr.files import ImageFile
+from simpleocr.files import open_img
 from simpleocr.grounding import TextGrounder, TerminalGrounder, UserGrounder
 from simpleocr.segmentation import ContourSegmenter
 from simpleocr.ocr import reconstruct_chars
@@ -8,7 +8,7 @@ from simpleocr.ocr import reconstruct_chars
 
 class TestGrounding(unittest.TestCase):
     def setUp(self):
-        self.img = ImageFile('digits1')
+        self.img = open_img('digits1')
         self.img.remove_ground()
         self.assertFalse(self.img.is_grounded)
         self.segments = ContourSegmenter().process(self.img.image)

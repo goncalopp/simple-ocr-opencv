@@ -40,17 +40,17 @@ class TestImageFile(unittest.TestCase):
     def test_ground(self):
         imgf = Image.from_file(TEST_FILE)
         self.assertEqual(imgf.is_grounded, True)
-        imgf.set_ground(imgf.ground.segments, imgf.ground.classes, write=False)
+        imgf.set_ground(imgf.ground.segments, imgf.ground.classes, write_file=False)
         self.assertEqual(imgf.is_grounded, True)
-        imgf.remove_ground(remove=False)
+        imgf.remove_ground(remove_file=False)
         self.assertEqual(imgf.is_grounded, False)
 
     def test_ground_unicode(self):
         imgf = Image.from_file(UNICODE_TEST_FILE)
         self.assertEqual(imgf.is_grounded, True)
-        imgf.set_ground(imgf.ground.segments, imgf.ground.classes, write=False)
+        imgf.set_ground(imgf.ground.segments, imgf.ground.classes, write_file=False)
         self.assertEqual(imgf.is_grounded, True)
-        imgf.remove_ground(remove=False)
+        imgf.remove_ground(remove_file=False)
         self.assertEqual(imgf.is_grounded, False)
 
     def test_image_from_pillow(self):

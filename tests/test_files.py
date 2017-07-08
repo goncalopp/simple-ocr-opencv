@@ -1,6 +1,6 @@
 import os
 import unittest
-
+from PIL import Image as PillowImage
 import simpleocr.files
 from simpleocr.files import Image
 
@@ -52,3 +52,8 @@ class TestImageFile(unittest.TestCase):
         self.assertEqual(imgf.is_grounded, True)
         imgf.remove_ground(remove=False)
         self.assertEqual(imgf.is_grounded, False)
+
+    def test_image_from_pillow(self):
+        pillow = PillowImage.open(Image.get_absolute_path(TEST_FILE))
+        image = Image.from_pil(pillow)
+        self.assertIsInstance(image, Image)

@@ -4,7 +4,7 @@ from . import segmentation as segmenters
 from . import classification as classifiers
 from . import feature_extraction as extractors
 from . import grounding as grounders
-from .files import ImageFile
+from .files import Image
 from six import unichr
 
 SEGMENTERS = {
@@ -57,8 +57,8 @@ class OCR(object):
 
     def train(self, image_file):
         """feeds the training data to the OCR"""
-        if not isinstance(image_file, ImageFile):
-            image_file = ImageFile(image_file)
+        if not isinstance(image_file, Image):
+            image_file = Image.from_file(image_file)
         if not image_file.is_grounded:
             raise Exception("The provided file is not grounded")
         features = self.extractor.extract(image_file.image, image_file.ground.segments)
@@ -66,8 +66,8 @@ class OCR(object):
 
     def ocr(self, image_file, show_steps=False):
         """performs ocr used trained classifier"""
-        if not isinstance(image_file, ImageFile):
-            image_file = ImageFile(image_file)
+        if not isinstance(image_file, Image):
+            image_file = Image.from_file(image_file)
         segments = self.segmenter.process(image_file.image)
         if show_steps:
             self.segmenter.display()
@@ -83,8 +83,8 @@ class OCR(object):
         :param text: The text, if self.grounder is a TextGrounder (defaults to None)
         :return:
         """
-        if not isinstance(image_file, ImageFile):
-            image_file = ImageFile(image_file)
+        if not isinstance(image_file, Image):
+            image_file = Image.from_file(image_file)
         segments = self.segmenter.process(image_file.image)
         if isinstance(self.grounder, grounders.TextGrounder):
             if not text:

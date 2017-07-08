@@ -42,7 +42,7 @@ except ImportError as e:
 # Classifiers
 from simpleocr.classification import KNNClassifier
 # Files
-from simpleocr.files import ImageFile
+from simpleocr.files import Image
 # Grounders
 from simpleocr.grounding import TerminalGrounder, TextGrounder, UserGrounder
 # Improver functions

@@ -1,7 +1,6 @@
 import os
 from pkg_resources import resource_filename
 import cv2
-import numpy
 from .tesseract_utils import read_boxfile, write_boxfile
 
 IMAGE_EXTENSIONS = ['.png', '.tif', '.jpg', '.jpeg']
@@ -18,12 +17,46 @@ def try_extensions(extensions, path):
     return None
 
 
-class GroundFile(object):
+def open_image(path):
+    return ImageFile(get_image_path(path))
+
+
+def get_image_path(path):
+    """
+    Get the absolute path for an image. Valid inputs are:
+    - Relative path with or without extension
+    - File in DATA_DIRECTORY with or without extension
+    - Absolute path with or without extension
+    :param path: image path in str type
+    :return: The absolute image path
+    """
+    # If the path exists, return the path, but make sure it's an absolute path first
+    if os.path.exists(path):
+        return os.path.abspath(path)
+    # Try to find the file with the passed path with the various extensions
+    image_with_extension = try_extensions(IMAGE_EXTENSIONS, os.path.splitext(path)[0])
+    if image_with_extension:
+        return os.path.abspath(image_with_extension)
+    # The file must be in the data directory if it has not yet been found
+    image_basename = os.path.basename(path)
+    image_datadir = try_extensions(IMAGE_EXTENSIONS, os.path.join(DATA_DIRECTORY, image_basename))
+    if image_datadir:
+        return os.path.abspath(image_datadir)
+    # The file cannot be found, so raise a FileNotFound Error
+    raise IOError
+
+
+class GroundBuffer(object):
+    def __init__(self, segments=None, classes=None):
+        self.segments = segments
+        self.classes = classes
+
+
+class GroundFile(GroundBuffer):
     """A file with ground truth data about a image (i.e.: characters and their position)"""
-    def __init__(self, path):
+    def __init__(self, path, segments=None, classes=None):
+        GroundBuffer.__init__(self, segments=segments, classes=classes)
         self.path = path
-        self.segments = None
-        self.classes = None
 
     def read(self):
         self.classes, self.segments = read_boxfile(self.path)
@@ -32,133 +65,79 @@ class GroundFile(object):
         write_boxfile(self.path, self.classes, self.segments)
 
 
-class Image(object):
+class ImageBuffer(object):
+    def __init__(self, array, debug=False):
+        self._image = array
+        self._ground = None
+        self._debug = debug
+
+    def set_ground(self, segments, classes):
+        """ Creates the ground data in memory """
+        if self.is_grounded and self._debug:
+            print("Warning: grounding already grounded Image")
+        self._ground = GroundBuffer(segments=segments, classes=classes)
+
+    def remove_ground(self):
+        """ Removes the grounding data in memory for the Image """
+        if not self.is_grounded:
+            print("Warning: removing ground for Image without ground data")
+        self._ground = None
+
+    @property
+    def image(self):
+        return self._image
+
+    @property
+    def is_grounded(self):
+        return not (self._ground is None)
+
+    @property
+    def ground(self):
+        return self._ground
+
+
+class ImageFile(ImageBuffer):
     """
     Complete class that contains functions for creation from file,
     as well as from PIL Images. Also supports grounding in memory.
     """
-    def __init__(self, array=None, path=None, debug=False):
-        # If array is actually a numpy array the truth value is ambiguous so it should be compared to None
-        if array is None:
-            # If array and path are both None, the object is created without any image data, so raise a ValueError
-            if not path:
-                raise ValueError("Image instance cannot be created without either an image array or an image path")
-            # Make sure the path is an absolute path to the image
-            path = self.get_absolute_path(path)
-            # Read the image and get an OpenCV compatible array
-            array = cv2.imread(path)
-        # Set all the attributes for the instance
-        self.image = array
-        self.path = path
-        self._debug = debug
-        # If a path is set, then the file is created with a file reference, so the existence of a ground file should
-        # be checked, and if it's available, the old ground data should be restored to memory
-        if self.path:
-            # Get the correct path for a ground file
-            self.ground_path = try_extensions(GROUND_EXTENSIONS, os.path.splitext(self.path)[0])
-            if os.path.exists(self.ground_path):
-                # Read the old ground data
-                self.ground = GroundFile(self.ground_path)
-                self.ground.read()
-            else:
-                # If the file is not available, set ground data to None
-                self.ground = None
+    def __init__(self, path, debug=False):
+        array = cv2.imread(path)
+        ImageBuffer.__init__(self, array, debug=debug)
+        self._path = path
+        basepath = os.path.splitext(path)[0]
+        self._ground_path = try_extensions(GROUND_EXTENSIONS, basepath)
+        if self._ground_path:
+            self._ground = GroundFile(self._ground_path)
+            self._ground.read()
         else:
-            # No file reference is available, so no ground data is available as the file has not yet been grounded
-            self.ground = None
-            self.ground_path = None
-
-    @staticmethod
-    def from_file(path):
-        """
-        Create an image object with a path to an image. As the path is
-        put through the get_absolute_path function, the valid inputs are the same
-        as for the path passed to that function
-        :param path: image path, str
-        :return: Image object with file reference
-        """
-        return Image(path=path)
-
-    @staticmethod
-    def from_pil(pillow):
-        """ Create an Image object based off of a Pillow Image """
-        return Image(Image.get_array_from_pil(pillow))
-
-    @staticmethod
-    def get_absolute_path(image):
-        """
-        Get the absolute path for an image. Valid inputs are:
-        - Relative path with or without extension
-        - File in DATA_DIRECTORY with or without extension
-        - Absolute path with or without extension
-        :param image: image path in str type
-        :return: The absolute image path
-        """
-        # If the path exists, return the path, but make sure it's an absolute path first
-        if os.path.exists(image):
-            return os.path.abspath(image)
-        # Try to find the file with the passed path with the various extensions
-        image_with_extension = try_extensions(IMAGE_EXTENSIONS, os.path.splitext(image)[0])
-        if image_with_extension:
-            return os.path.abspath(image_with_extension)
-        # The file must be in the data directory if it has not yet been found
-        image_basename = os.path.basename(image)
-        image_datadir = try_extensions(IMAGE_EXTENSIONS, os.path.join(DATA_DIRECTORY, image_basename))
-        if image_datadir:
-            return os.path.abspath(image_datadir)
-        # The file cannot be found, so raise a FileNotFound Error
-        raise IOError
-
-    @staticmethod
-    def get_array_from_pil(pillow):
-        """
-        Returns an OpenCV compatible array from a Pillow Image object
-        :param pillow: pillow image object
-        :return: OpenCV compatible numpy array
-        """
-        imagefile = numpy.array(pillow)
-        return imagefile[:, :, ::-1].copy()
-
-    @property
-    def is_grounded(self):
-        """
-        :return: True if Image is grounded
-        """
-        return not (self.ground is None)
-
-    @property
-    def has_file_reference(self):
-        """
-        :return: True if Image has a file reference
-        """
-        return self.path is not None
+            self._ground_path = basepath + GROUND_EXTENSIONS_DEFAULT
+            self._ground = None
 
     def set_ground(self, segments, classes, write_file=False):
-        """
-        Creates the ground data in memory, optionally writing it to a ground file,
-        if write is set to True
-        """
+        """creates the ground, saves it to a file"""
         if self.is_grounded and self._debug:
-            print("Warning: grounding already grounded Image")
-        self.ground = GroundFile(self.ground_path)
+            print("Warning: grounding already grounded file")
+        self._ground = GroundFile(self._ground_path)
         self.ground.segments = segments
         self.ground.classes = classes
         if write_file:
-            if not self.ground_path:
-                raise ValueError("Cannot write ground file for an Image without file reference")
             self.ground.write()
 
     def remove_ground(self, remove_file=False):
-        """
-        Removes the grounding data in memory for the Image, optionally deleting its
-        ground file along with it, if remove is set to True
-        """
-        if not self.is_grounded:
-            print("Warning: removing ground for Image without ground data")
-        self.ground = None
+        """removes ground, optionally deleting it's file"""
+        if not self.is_grounded and self._debug:
+            print("Warning: ungrounding ungrounded file")
+        self._ground = None
         if remove_file:
-            if not self.ground_path:
-                raise ValueError("Cannot remove ground file for an Image without file reference")
-            os.remove(self.ground_path)
+            os.remove(self._ground_path)
+
+    @property
+    def path(self):
+        return self._path
+
+    @property
+    def ground_path(self):
+        return self._ground_path
 
 

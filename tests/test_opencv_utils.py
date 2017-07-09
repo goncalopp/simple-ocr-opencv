@@ -1,16 +1,16 @@
 import unittest
 from simpleocr import opencv_utils
-from simpleocr.files import Image
+from simpleocr.files import open_image
 
 
 class TestOpenCVUtils(unittest.TestCase):
     def test_opencv_brightness_raise(self):
-        image = Image.from_file('digits1')
+        image = open_image('digits1')
         processor = opencv_utils.BrightnessProcessor(brightness=2.0)
         self.assertRaises(AssertionError, lambda: processor._process(image.image))
 
     def test_opencv_brightness(self):
-        image = Image.from_file('digits1')
+        image = open_image('digits1')
         processor = opencv_utils.BrightnessProcessor(brightness=0.5)
         processor._process(image.image)
         # TODO: Add checking and try display() function

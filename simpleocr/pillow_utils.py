@@ -1,4 +1,4 @@
-from .files import ImageBuffer
+from .files import Image
 from PIL import Image
 import numpy
 import cv2
@@ -18,7 +18,7 @@ def pil_to_imagebuffer(pillow):
     """
     Convert a Pillow Image object to an ImageBuffer object
     """
-    return ImageBuffer(pil_to_cv_array(pillow))
+    return Image(pil_to_cv_array(pillow))
 
 
 def pil_to_cv_array(pillow):

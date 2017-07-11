@@ -48,7 +48,7 @@ def get_file_path(path, ground=False):
     raise IOError
 
 
-class GroundBuffer(object):
+class Ground(object):
     """
     Simple data class to store the ground data for an ImageBuffer in memory only.
     If the program exits, the data is lost.
@@ -58,7 +58,7 @@ class GroundBuffer(object):
         self.classes = classes
 
 
-class GroundFile(GroundBuffer):
+class GroundFile(Ground):
     """
     Child class of GroundBuffer with file support. This class can write the data
     to a box file so it can be restored when the image file the ground data belongs
@@ -70,7 +70,7 @@ class GroundFile(GroundBuffer):
         :param segments: segments to store
         :param classes: classes to store
         """
-        GroundBuffer.__init__(self, segments=segments, classes=classes)
+        Ground.__init__(self, segments=segments, classes=classes)
         self.path = path
 
     def read(self):
@@ -82,7 +82,7 @@ class GroundFile(GroundBuffer):
         write_boxfile(self.path, self.classes, self.segments)
 
 
-class ImageBuffer(object):
+class Image(object):
     """
     Class to work with an image in memory
     """
@@ -99,7 +99,7 @@ class ImageBuffer(object):
         """ Creates the ground data in memory """
         if self.is_grounded and self._debug:
             print("Warning: grounding already grounded Image")
-        self._ground = GroundBuffer(segments=segments, classes=classes)
+        self._ground = Ground(segments=segments, classes=classes)
 
     def remove_ground(self):
         """ Removes the grounding data in memory for the Image """
@@ -122,7 +122,7 @@ class ImageBuffer(object):
         return self._ground
 
 
-class ImageFile(ImageBuffer):
+class ImageFile(Image):
     """
     Complete class that contains functions for creation from file,
     as well as from PIL Images. Also supports grounding in memory.
@@ -133,7 +133,7 @@ class ImageFile(ImageBuffer):
         :param debug: if True, debug prints are enabled
         """
         array = cv2.imread(path)
-        ImageBuffer.__init__(self, array, debug=debug)
+        Image.__init__(self, array, debug=debug)
         self._path = path
         basepath = os.path.splitext(path)[0]
         self._ground_path = try_extensions(GROUND_EXTENSIONS, basepath)

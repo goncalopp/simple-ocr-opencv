@@ -49,8 +49,7 @@ def get_file_path(path, ground=False):
 
 class Ground(object):
     """
-    Simple data class to store the ground data for an ImageBuffer in memory only.
-    If the program exits, the data is lost.
+    Data class that includes labeled characters of an Image and their positions
     """
     def __init__(self, segments=None, classes=None):
         self.segments = segments

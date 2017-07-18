@@ -117,8 +117,8 @@ class Image(object):
 
 class ImageFile(Image):
     """
-    Complete class that contains functions for creation from file,
-    as well as from PIL Images. Also supports grounding in memory.
+    Complete class that contains functions for creation from file.
+    Also supports grounding in memory.
     """
     def __init__(self, path, debug=False):
         """

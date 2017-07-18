@@ -10,7 +10,7 @@ UNICODE_TEST_FILE = 'unicode1'
 
 
 class TestImageFile(unittest.TestCase):
-    def test_image_from_file(self):
+    def test_open_image(self):
         # in data dir, no extension
         open_image(TEST_FILE)
         # in data dir, with extension
@@ -33,7 +33,7 @@ class TestImageFile(unittest.TestCase):
         finally:
             os.chdir(old_cwd)
 
-    def test_from_file_inexistent(self):
+    def test_open_image_nonexistent(self):
         with self.assertRaises(IOError):
             open_image("inexistent")
 

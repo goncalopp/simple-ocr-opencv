@@ -63,11 +63,6 @@ class GroundFile(Ground):
     to is opened again.
     """
     def __init__(self, path, segments=None, classes=None):
-        """
-        :param path: path to the box file
-        :param segments: segments to store
-        :param classes: classes to store
-        """
         Ground.__init__(self, segments=segments, classes=classes)
         self.path = path
 

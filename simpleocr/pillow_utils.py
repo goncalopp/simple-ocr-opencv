@@ -18,7 +18,7 @@ def pil_to_image(pillow):
     """
     Convert a Pillow Image object to an ImageBuffer object
     """
-    return Image(pil_to_cv_array(pillow))
+    return Image.fromarray(pil_to_cv_array(pillow))
 
 
 def pil_to_cv_array(pillow):

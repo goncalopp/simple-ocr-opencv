@@ -40,8 +40,7 @@ def get_file_path(path, ground=False):
     if image_with_extension:
         return os.path.abspath(image_with_extension)
     # The file must be in the data directory if it has not yet been found
-    image_basename = os.path.basename(path)
-    image_datadir = try_extensions(extensions, os.path.join(DATA_DIRECTORY, image_basename))
+    image_datadir = try_extensions(extensions, os.path.join(DATA_DIRECTORY, path))
     if image_datadir:
         return os.path.abspath(image_datadir)
     # The file cannot be found, so raise a FileNotFound Error

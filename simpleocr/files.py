@@ -125,6 +125,8 @@ class ImageFile(Image):
         :param path: path to the image to read, must be valid and absolute
         :param debug: if True, debug prints are enabled
         """
+        if not os.path.isabs(path):
+            raise ValueError("path value is not absolute: {0}".format(path))
         array = cv2.imread(path)
         Image.__init__(self, array, debug=debug)
         self._path = path

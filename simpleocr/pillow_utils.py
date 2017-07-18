@@ -4,7 +4,7 @@ import numpy
 import cv2
 
 
-def imagebuffer_to_pil(imagefile):
+def image_to_pil(imagefile):
     """
     Convert an ImageFile or ImageBuffer object to a Pillow Image object
     :param imagefile: ImageFile object
@@ -14,7 +14,7 @@ def imagebuffer_to_pil(imagefile):
     return Image.fromarray(pillow)
 
 
-def pil_to_imagebuffer(pillow):
+def pil_to_image(pillow):
     """
     Convert a Pillow Image object to an ImageBuffer object
     """

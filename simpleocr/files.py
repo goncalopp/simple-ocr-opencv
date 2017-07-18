@@ -143,9 +143,7 @@ class ImageFile(Image):
         """ creates the ground, saves it to a file """
         if self.is_grounded and self._debug:
             print("Warning: grounding already grounded file")
-        self._ground = GroundFile(self._ground_path)
-        self.ground.segments = segments
-        self.ground.classes = classes
+        self._ground = GroundFile(self._ground_path, segments=segments, classes=classes)
         if write_file:
             self.ground.write()
 

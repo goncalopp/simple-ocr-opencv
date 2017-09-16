@@ -82,7 +82,6 @@ class Image(object):
     def __init__(self, array):
         """
         :param array: array with image data, must be OpenCV compatible
-        :param debug: if True, debug prints are enabled
         """
         self._image = array
         self._ground = None
@@ -118,7 +117,6 @@ class ImageFile(Image):
     def __init__(self, path):
         """
         :param path: path to the image to read, must be valid and absolute
-        :param debug: if True, debug prints are enabled
         """
         if not os.path.isabs(path):
             raise ValueError("path value is not absolute: {0}".format(path))

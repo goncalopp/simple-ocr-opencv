@@ -1,7 +1,7 @@
-from feature_extraction import FEATURE_DATATYPE
+from .feature_extraction import FEATURE_DATATYPE
 import numpy
 import cv2
-from opencv_utils import get_opencv_version
+from .opencv_utils import get_opencv_version
 from six import unichr
 
 CLASS_DATATYPE = numpy.uint16

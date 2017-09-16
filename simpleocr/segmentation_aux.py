@@ -1,5 +1,5 @@
-from processor import Processor, DisplayingProcessor
-from opencv_utils import draw_lines, show_image_and_wait_for_key
+from .processor import Processor, DisplayingProcessor
+from .opencv_utils import draw_lines, show_image_and_wait_for_key
 import numpy
 import cv2
 from functools import reduce

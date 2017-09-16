@@ -1,10 +1,10 @@
 import numpy
-from opencv_utils import show_image_and_wait_for_key, draw_segments
-import segmentation as segmenters
-import classification as classifiers
-import feature_extraction as extractors
-import grounding as grounders
-from files import ImageFile
+from .opencv_utils import show_image_and_wait_for_key, draw_segments
+from . import segmentation as segmenters
+from . import classification as classifiers
+from . import feature_extraction as extractors
+from . import grounding as grounders
+from .files import ImageFile
 from six import unichr
 
 SEGMENTERS = {

@@ -20,4 +20,4 @@ def write_boxfile(path, classes, segments):
     classes, segments = classes_from_numpy(classes), segments_from_numpy(segments)
     with io.open(path, 'w') as f:
         for c, s in zip(classes, segments):
-            f.write(c.encode('utf-8') + ' ' + ' '.join(map(str, s)) + " 0\n")
+            f.write(c + ' ' + ' '.join(map(str, s)) + " 0\n")

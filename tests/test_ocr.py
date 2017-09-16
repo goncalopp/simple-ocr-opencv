@@ -1,10 +1,9 @@
 import unittest
-
-from segmentation import ContourSegmenter
-from feature_extraction import SimpleFeatureExtractor
-from files import ImageFile
-from classification import KNNClassifier
-from ocr import OCR, reconstruct_chars
+from simpleocr.segmentation import ContourSegmenter
+from simpleocr.feature_extraction import SimpleFeatureExtractor
+from simpleocr.files import open_img
+from simpleocr.classification import KNNClassifier
+from simpleocr.ocr import OCR, reconstruct_chars
 
 
 class TestOCR(unittest.TestCase):
@@ -26,7 +25,7 @@ class TestOCR(unittest.TestCase):
         self.assertEqual(list(classes), list(ground_truth))
 
     def test_ocr_digits(self):
-        self._test_ocr(ImageFile('digits1'), ImageFile('digits2'))
+        self._test_ocr(open_img('digits1'), open_img('digits2'))
 
     def test_ocr_unicode(self):
-        self._test_ocr(ImageFile('unicode1'), ImageFile('unicode1'))
+        self._test_ocr(open_img('unicode1'), open_img('unicode1'))

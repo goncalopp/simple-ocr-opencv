@@ -1,7 +1,7 @@
 """various classes for establishing ground truth"""
 
-from classification import classes_to_numpy, classes_from_numpy, BLANK_CLASS
-from opencv_utils import show_image_and_wait_for_key, draw_segments, draw_classes
+from .classification import classes_to_numpy, classes_from_numpy, BLANK_CLASS
+from .opencv_utils import show_image_and_wait_for_key, draw_segments, draw_classes
 import numpy
 import string
 from six import text_type, unichr, moves
@@ -85,9 +85,9 @@ class UserGrounder(Grounder):
             elif key == 32:  # space
                 classes[i] = NOT_A_SEGMENT
                 i += 1
-            elif key == 65361:  # <-
+            elif key in (81, 65361):  # <-
                 i -= 1
-            elif key == 65363:  # ->
+            elif key in (83, 65363):  # ->
                 i += 1
             elif key in allowed_chars:
                 classes[i] = unichr(key)

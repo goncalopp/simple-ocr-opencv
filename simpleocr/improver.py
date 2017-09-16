@@ -36,6 +36,7 @@ def enhance_image(imagefile, color=None, brightness=None, contrast=None, sharpne
     imagefile.image = pillow_to_numpy(image)
     return imagefile
 
+
 def crop_image(imagefile, box):
     """
     Crop an ImageFile object image to the box coordinates. This function is not suitable for use on images to be

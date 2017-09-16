@@ -1,7 +1,7 @@
 import numpy
 import cv2
-from segmentation import region_from_segment
-from opencv_utils import background_color
+from .segmentation import region_from_segment
+from .opencv_utils import background_color
 
 FEATURE_DATATYPE = numpy.float32
 # FEATURE_SIZE is defined on the specific feature extractor instance

@@ -1,7 +1,7 @@
-from opencv_utils import show_image_and_wait_for_key, draw_segments, BlurProcessor, get_opencv_version
-from processor import DisplayingProcessor, DisplayingProcessorStack, create_broadcast
-from segmentation_aux import SegmentOrderer
-from segmentation_filters import create_default_filter_stack
+from .opencv_utils import show_image_and_wait_for_key, draw_segments, BlurProcessor, get_opencv_version
+from .processor import DisplayingProcessor, DisplayingProcessorStack, create_broadcast
+from .segmentation_aux import SegmentOrderer
+from .segmentation_filters import create_default_filter_stack
 import numpy
 import cv2
 

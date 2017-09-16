@@ -79,25 +79,20 @@ class Image(object):
     """
     Class to work with an image in memory
     """
-    def __init__(self, array, debug=False):
+    def __init__(self, array):
         """
         :param array: array with image data, must be OpenCV compatible
         :param debug: if True, debug prints are enabled
         """
         self._image = array
         self._ground = None
-        self._debug = debug
 
     def set_ground(self, segments, classes):
         """ Creates the ground data in memory """
-        if self.is_grounded and self._debug:
-            print("Warning: grounding already grounded Image")
         self._ground = Ground(segments=segments, classes=classes)
 
     def remove_ground(self):
         """ Removes the grounding data in memory for the Image """
-        if not self.is_grounded:
-            print("Warning: removing ground for Image without ground data")
         self._ground = None
 
     # These properties prevent the user from altering the attributes stored within
@@ -120,7 +115,7 @@ class ImageFile(Image):
     Complete class that contains functions for creation from file.
     Also supports grounding in memory.
     """
-    def __init__(self, path, debug=False):
+    def __init__(self, path):
         """
         :param path: path to the image to read, must be valid and absolute
         :param debug: if True, debug prints are enabled
@@ -128,7 +123,7 @@ class ImageFile(Image):
         if not os.path.isabs(path):
             raise ValueError("path value is not absolute: {0}".format(path))
         array = cv2.imread(path)
-        Image.__init__(self, array, debug=debug)
+        Image.__init__(self, array)
         self._path = path
         basepath = os.path.splitext(path)[0]
         self._ground_path = try_extensions(GROUND_EXTENSIONS, basepath)
@@ -141,16 +136,12 @@ class ImageFile(Image):
 
     def set_ground(self, segments, classes, write_file=False):
         """ creates the ground, saves it to a file """
-        if self.is_grounded and self._debug:
-            print("Warning: grounding already grounded file")
         self._ground = GroundFile(self._ground_path, segments=segments, classes=classes)
         if write_file:
             self.ground.write()
 
     def remove_ground(self, remove_file=False):
         """ Removes ground, optionally deleting it's file """
-        if not self.is_grounded and self._debug:
-            print("Warning: ungrounding ungrounded file")
         self._ground = None
         if remove_file:
             os.remove(self._ground_path)

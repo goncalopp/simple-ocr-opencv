@@ -1,5 +1,5 @@
 from PIL import ImageEnhance, ImageOps
-from .pillow_utils import imagebuffer_to_pil, pil_to_cv_array
+from .pillow_utils import image_to_pil, pil_to_cv_array
 
 """
 These functions are not suitable for use on images to be grounded and then trained, as the file on disk is not actually
@@ -21,7 +21,7 @@ def enhance_image(imagefile, color=None, brightness=None, contrast=None, sharpne
     :param invert: Invert the colors of the image, bool
     :return: modified ImageFile object, with no changes written to the actual file
     """
-    image = imagebuffer_to_pil(imagefile)
+    image = image_to_pil(imagefile)
     if color is not None:
         image = ImageEnhance.Color(image).enhance(color)
     if brightness is not None:
@@ -48,7 +48,7 @@ def crop_image(imagefile, box):
         raise ValueError("The box parameter is not a tuple")
     if not len(box) == 4:
         raise ValueError("The box parameter does not have length 4")
-    image = imagebuffer_to_pil(imagefile)
+    image = image_to_pil(imagefile)
     image.crop(box)
     imagefile.image = pil_to_cv_array(image)
     return imagefile

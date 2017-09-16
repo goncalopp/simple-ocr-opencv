@@ -85,9 +85,9 @@ class UserGrounder(Grounder):
             elif key == 32:  # space
                 classes[i] = NOT_A_SEGMENT
                 i += 1
-            elif key == 65361:  # <-
+            elif key in (81, 65361):  # <-
                 i -= 1
-            elif key == 65363:  # ->
+            elif key in (83, 65363):  # ->
                 i += 1
             elif key in allowed_chars:
                 classes[i] = unichr(key)

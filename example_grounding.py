@@ -1,6 +1,6 @@
-from .files import open_image
-from .grounding import UserGrounder
-from .segmentation import ContourSegmenter
+from simpleocr.files import open_image
+from simpleocr.grounding import UserGrounder
+from simpleocr.segmentation import ContourSegmenter
 
 segmenter = ContourSegmenter(blur_y=5, blur_x=5, block_size=11, c=10)
 new_image = open_image('digits1')

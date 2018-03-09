@@ -72,7 +72,7 @@ class ContainedFilter(Filter):
 
     def _good_segments(self, segments):
         m = contained_segments_matrix(segments)
-        return (True - numpy.max(m, axis=1))
+        return True ^ numpy.max(m, axis=1)
 
 
 class NearLineFilter(Filter):

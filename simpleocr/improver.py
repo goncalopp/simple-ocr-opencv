@@ -1,6 +1,5 @@
-from PIL import ImageEnhance, Image, ImageOps
-import numpy
-import cv2
+from PIL import ImageEnhance, ImageOps
+from .pillow_utils import image_to_pil, pil_to_cv_array
 
 """
 These functions are not suitable for use on images to be grounded and then trained, as the file on disk is not actually
@@ -22,7 +21,7 @@ def enhance_image(imagefile, color=None, brightness=None, contrast=None, sharpne
     :param invert: Invert the colors of the image, bool
     :return: modified ImageFile object, with no changes written to the actual file
     """
-    image = imagefile_to_pillow(imagefile)
+    image = image_to_pil(imagefile)
     if color is not None:
         image = ImageEnhance.Color(image).enhance(color)
     if brightness is not None:
@@ -33,7 +32,7 @@ def enhance_image(imagefile, color=None, brightness=None, contrast=None, sharpne
         image = ImageEnhance.Sharpness(image).enhance(sharpness)
     if invert:
         image = ImageOps.invert(image)
-    imagefile.image = pillow_to_numpy(image)
+    imagefile.image = pil_to_cv_array(image)
     return imagefile
 
 
@@ -49,27 +48,7 @@ def crop_image(imagefile, box):
         raise ValueError("The box parameter is not a tuple")
     if not len(box) == 4:
         raise ValueError("The box parameter does not have length 4")
-    image = imagefile_to_pillow(imagefile)
+    image = image_to_pil(imagefile)
     image.crop(box)
-    imagefile.image = pillow_to_numpy(image)
+    imagefile.image = pil_to_cv_array(image)
     return imagefile
-
-
-def imagefile_to_pillow(imagefile):
-    """
-    Convert an ImageFile object to a Pillow Image object
-    :param imagefile: ImageFile object
-    :return: Image object
-    """
-    pillow = cv2.cvtColor(imagefile.image, cv2.COLOR_BGR2RGB)
-    return Image.fromarray(pillow)
-
-
-def pillow_to_numpy(pillow):
-    """
-    Convert a Pillow Image object to an ImageFile object
-    :param pillow: Image object
-    :return: cv2 compatible array that fits into ImageFile.image
-    """
-    imagefile = numpy.array(pillow)
-    return imagefile[:, :, ::-1].copy()

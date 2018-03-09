@@ -15,5 +15,5 @@ setup(
                  "License :: OSI Approved :: GNU Affero General Public License v2 or later (AGPLv2+)"],
     include_package_data=True,
     package_data={"": ["simpleocr/data/*.box", "simpleocr/data/*.png"]},
-    install_requires=["six", "pillow"]
+    install_requires=["six", "pillow", "numpy"]
 )

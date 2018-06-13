@@ -1,4 +1,4 @@
-from simpleocr.files import open_img
+from simpleocr.files import open_image
 from simpleocr.segmentation import ContourSegmenter
 from simpleocr.feature_extraction import SimpleFeatureExtractor
 from simpleocr.classification import KNNClassifier
@@ -9,9 +9,9 @@ extractor = SimpleFeatureExtractor(feature_size=10, stretch=False)
 classifier = KNNClassifier()
 ocr = OCR(segmenter, extractor, classifier)
 
-ocr.train(open_img('digits1'))
+ocr.train(open_image('digits1'))
 
-test_image = open_img('digits2')
+test_image = open_image('digits2')
 test_chars, test_classes, test_segments = ocr.ocr(test_image, show_steps=True)
 
 print("accuracy:", accuracy(test_image.ground.classes, test_classes))

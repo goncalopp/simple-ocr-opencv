@@ -24,7 +24,7 @@ class Filter(DisplayingProcessor):
         copy = BrightnessProcessor(brightness=0.6).process(copy)
         s, g = self._input, self.good_segments_indexes
         draw_segments(copy, s[g], (0, 255, 0))
-        draw_segments(copy, s[True - g], (0, 0, 255))
+        draw_segments(copy, s[True ^ g], (0, 0, 255))
         show_image_and_wait_for_key(copy, "segments filtered by " + self.__class__.__name__)
 
     def _good_segments(self, segments):

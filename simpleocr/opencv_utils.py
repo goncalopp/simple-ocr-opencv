@@ -2,6 +2,7 @@ from .numpy_utils import OverflowPreventer
 from .processor import DisplayingProcessor
 import numpy
 import cv2
+from packaging import version
 
 
 class ImageProcessor(DisplayingProcessor):
@@ -127,8 +128,8 @@ def get_opencv_version():
     Return the OpenCV version by checking cv2.__version__
     :return: int, 2 or 3
     """
-    if cv2.__version__.startswith("3"):
-        return 3
+    if version.parse(cv2.__version__) >= version.parse("3.0.0"):
+        return int(cv2.__version__[0])
     elif cv2.__version__.startswith("2"):
         return 2
     else:

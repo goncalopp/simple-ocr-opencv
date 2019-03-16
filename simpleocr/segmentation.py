@@ -56,7 +56,7 @@ class RawContourSegmenter(RawSegmenter):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         image = cv2.adaptiveThreshold(image, maxValue=255, adaptiveMethod=cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
                                       thresholdType=cv2.THRESH_BINARY, blockSize=self.block_size, C=self.c)
-        if get_opencv_version() >= 3:
+        if get_opencv_version() == 3:
             _, contours, hierarchy = cv2.findContours(image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
         else:
             contours, hierarchy = cv2.findContours(image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)

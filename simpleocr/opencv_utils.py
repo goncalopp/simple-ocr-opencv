@@ -125,13 +125,7 @@ def draw_classes(image, segments, classes):
 def get_opencv_version():
     """
     Return the OpenCV version by checking cv2.__version__
-    :return: int, 2 or 3
+    :return: int
     """
-    if cv2.__version__.startswith("3"):
-        return 3
-    elif cv2.__version__.startswith("2"):
-        return 2
-    else:
-        # This is for the Ubuntu repositories
-        # Not the most efficient logical statement, but the most logical to edit in the future
-        return 2
+    return int(cv2.__version__.split(".")[0])
+

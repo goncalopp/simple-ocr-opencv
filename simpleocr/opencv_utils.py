@@ -112,7 +112,7 @@ def draw_segments(image, segments, color=(255, 0, 0), line_width=1):
 def draw_lines(image, ys, color=(255, 0, 0), line_width=1):
     """draws horizontal lines"""
     for y in ys:
-        cv2.line(image, (0, y), (image.shape[1], y), color, line_width)
+        cv2.line(image, (0, int(y)), (image.shape[1], int(y)), color, line_width)
 
 
 def draw_classes(image, segments, classes):

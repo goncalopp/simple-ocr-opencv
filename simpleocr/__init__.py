@@ -5,7 +5,7 @@ except ImportError as e:
 
 
     def is_python_3():
-        return sys.version_info[0] is 3
+        return sys.version_info[0] == 3
 
     # Valid values for sys.platform on Linux include "linux" and "linux2"
     if "linux" in sys.platform:
@@ -25,7 +25,7 @@ except ImportError as e:
                 "\n- Install the unofficial \"opencv-python\" package from PyPI using pip"
             )
     # The only valid value for Windows is "win32"
-    elif sys.platform is "win32":
+    elif sys.platform == "win32":
         print(
             "OpenCV-Python could not be imported. As you are running Windows, you have the following options to "
             "install it:"

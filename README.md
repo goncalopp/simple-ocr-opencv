@@ -66,7 +66,7 @@ should be available in LICENSE. If not, check out the link to learn more.
  
     Copyright (C) 2012-2017 by the simple-ocr-opencv authors
     All authors are the copyright owners of their respective additions
-    
+
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU AGPLv3 License, as found in LICENSE.
 
@@ -77,4 +77,3 @@ should be available in LICENSE. If not, check out the link to learn more.
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.    
-  
